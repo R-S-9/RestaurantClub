@@ -19,7 +19,3 @@ def SearchResultsView(request):
     menu = Menu.objects.filter(Q(menu__contains=word) | Q(menu__iexact=word) | Q(menu__contains=word))
 
     return render(request, 'search_results.html', {'menu': menu})
-
-
-
-
