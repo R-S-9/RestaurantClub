@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import Q
+
 from django.utils import timezone
 
 
@@ -33,7 +35,8 @@ class Menu(models.Model):
 	menu = models.TextField(
 		blank=False,
 		verbose_name='Меню ресторана',
-		help_text='Опишите каждое блюдо, с игридиентами, ценой и граммовкой'
+		help_text='Опишите каждое блюдо, с игридиентами, ценой и граммовкой',
+
 	)
 
 	id_menu = models.ForeignKey(
@@ -44,8 +47,41 @@ class Menu(models.Model):
 		help_text='Выберите ресторан'
 	)
 
+	@classmethod
+	def get_data(cls, search_word):
+		menu = cls.objects.filter(
+			Q(menu__icontains=search_word) | Q(menu__iexact=search_word)
+		)
+
+		if menu.exists():
+			return menu, cls._receiving_and_processing_data(menu, search_word)
+
+		return None
+
+	@staticmethod
+	def _receiving_and_processing_data(data, search_word):
+		"""Функция для обработки данных по введеным критериям."""
+
+		first = []
+		# Запись всех слов в список.
+		for content in data:
+			if not first:
+				first.append(content.menu)
+
+		helper = None
+		for content in first:
+			helper = content
+		first = helper.split('\n')
+
+		main_data = None
+		for content in first:
+			if search_word in content:
+				main_data = content
+
+		return main_data
+
 	def __str__(self):
-		return self.id_menu
+		return f'Меню {self.id_menu}'
 
 	class Meta:
 		verbose_name = 'Меню'
@@ -71,7 +107,7 @@ class Reviews(models.Model):
 
 	stars = models.IntegerField(
 		verbose_name='Оценка',
-		default='',
+		default=5,
 		help_text='Оценка ресторана по 5 бальной шкале'
 	)
 
