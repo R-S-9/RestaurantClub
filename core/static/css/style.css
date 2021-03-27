@@ -1,0 +1,15 @@
+input::-webkit-input-placeholder {
+  color: #B6C0A5;
+  font-style: italic;
+  background: #E0EFCA;
+}
+input:-moz-placeholder {
+  color: #B6C0A5;
+  font-style: italic;
+  background: #E0EFCA;
+}
+input:-ms-input-placeholder {
+  color: #B6C0A5;
+  font-style: italic;
+  background: #E0EFCA;
+}

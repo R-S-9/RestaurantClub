@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+{% load static %}
+{% csrf_token %}
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %} RestaurantClub {% endblock %}</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
+    </head>
+
+    {% block content %}
+        <body>
+            <form action="{% url 'search_results_view' %}" method="POST">
+                <input name="search" placeholder="Искать здесь..." type="search">
+                <!--<input class="" type="submit" value="Поиск" onclick="window.location.href = 'http://127.0.0.1:8000/search/';"> -->
+            </form>
+            {% if errors %}
+                {{ errors }}
+            {% endif %}
+            {% for index in menu %}
+                <p>{{ index.menu }}</p><br>
+                <p>{{ index.reviews }}</p><br>
+            {% endfor %}
+            {% for con in reviews %}
+                <p>{{ con.reviews }}</p><br>
+            {% endfor %}
+        </body>
+    {% endblock %}
+</html>

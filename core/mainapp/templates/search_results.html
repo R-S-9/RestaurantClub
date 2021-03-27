@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+{% load static %}
+{% csrf_token %}
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %} RestaurantClub {% endblock %}</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
+    </head>
+
+    {% block content %}
+        <body>
+            <div>
+                Главная стриница поиска.<br>
+                Вы искали:
+                {% if search_word %}
+                    {{ search_word }}.
+                {% endif %}
+                <br><br>
+                                Мы подобрали по вашему поиску блюда из ресторанов:
+                <br>
+
+                <br>
+                {% for i, j in data.items %}
+                {%  if i %}
+                <br>
+                {# хуй -  {{ i|join:',' }} #}
+                {#и  {{ j|join:","|linebreaks }} #}
+                жопа = {{ j }}<br>
+                бла бла бла<br>
+                
+                <br>
+                {% endif %}
+
+                {% endfor %}
+                {% for content in restaurant %}
+                        {% if dish and restaurant %}<br>
+                            Ресторан {{ content }}.<br> Подобранное блюдо - {{ dish }}.<br>
+
+                        {% endif %}
+                        {% if reviews and stars %}
+                            Общие оценки пользователей: {{ stars_sum }}.<br>
+                        {% else %}
+                            Отзывов на ресторан нет. Будьте первым кто оставит отзыв.
+                        {% endif %}
+                        <br>
+                        <br>
+
+                                --------------------------------------------------------------------------------------
+                        <br>
+                        <br>
+                    {% endfor %}
+                =====================================================================================================
+                <br><br>
+
+                                                --------------------------------------------------------------------------------------
+                <br><br>
+                    {% for restaurant in data %}
+                        {% if restaurant.dish %}
+                            {{ restaurant.restaurant_name }}, блюдо - {{ restaurant.dish }}.<br>
+                            Полное меню ресторанов: {{ restaurant.menu }}
+                        {% endif %}
+                        {% if restaurant.reviews.exists %}
+                            {{ restaurant.rating }}                <br><br>
+                            {% for r in restaurant.reviews %}
+
+                                {{ r.stars }} <br>
+                                {{ r.review }} <br><br>
+                            {% endfor %}
+
+                        {% else %}
+                            <br>Отзывов на ресторан нет. Будьте первым кто оставит отзыв.
+                        {% endif %}
+                        <br>
+
+                        <br>
+                                --------------------------------------------------------------------------------------
+                        <br>
+                        <br>
+                    {% endfor %}
+            </div>
+            <br>
+        </body>
+    {% endblock %}
+</html>
