@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+{% extends "base.html" %}
+{% load static %}
+{% csrf_token %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Отзыв {{ restaurant_name }}{% endblock %}</title>
+</head>
+{% block content %}
+<body>
+    {{ restaurant_name }}
+    {% if errors %}
+        {{ errors|linebreaks }}
+    {% endif %}
+    <br>
+    <br>
+    <form method="POST" >
+    {% for i in form %}
+        {{ i }}
+    {% endfor %}
+        <p><button type="submit" class="btn-create">Создать</button></p>
+    </form>
+</body>
+{% endblock %}
+</html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 
+{% extends "base.html" %}
 {% load static %}
 {% csrf_token %}
 
@@ -16,70 +17,33 @@
                 Главная стриница поиска.<br>
                 Вы искали:
                 {% if search_word %}
-                    {{ search_word }}.
+                    {{ search_word }}.<br>
                 {% endif %}
-                <br><br>
                                 Мы подобрали по вашему поиску блюда из ресторанов:
-                <br>
-
-                <br>
-                {% for i, j in data.items %}
-                {%  if i %}
-                <br>
-                {# хуй -  {{ i|join:',' }} #}
-                {#и  {{ j|join:","|linebreaks }} #}
-                жопа = {{ j }}<br>
-                бла бла бла<br>
-                
-                <br>
-                {% endif %}
-
-                {% endfor %}
-                {% for content in restaurant %}
-                        {% if dish and restaurant %}<br>
-                            Ресторан {{ content }}.<br> Подобранное блюдо - {{ dish }}.<br>
-
-                        {% endif %}
-                        {% if reviews and stars %}
-                            Общие оценки пользователей: {{ stars_sum }}.<br>
-                        {% else %}
-                            Отзывов на ресторан нет. Будьте первым кто оставит отзыв.
-                        {% endif %}
-                        <br>
-                        <br>
-
-                                --------------------------------------------------------------------------------------
-                        <br>
-                        <br>
-                    {% endfor %}
-                =====================================================================================================
-                <br><br>
-
-                                                --------------------------------------------------------------------------------------
-                <br><br>
-                    {% for restaurant in data %}
+<br><br>
+                =================================================================================<br><br>
+                <form method="POST">
+                        {% for restaurant in data %}
                         {% if restaurant.dish %}
-                            {{ restaurant.restaurant_name }}, блюдо - {{ restaurant.dish }}.<br>
-                            Полное меню ресторанов: {{ restaurant.menu }}
-                        {% endif %}
+                            <a href="{% url 'restaurant' rest_name=restaurant.restaurant_name %}">{{ restaurant.restaurant_name }}</a><br> блюдо - {{ restaurant.dish }}.<br>
+                        {% endif %}<br>
+
+                </form>
                         {% if restaurant.reviews.exists %}
-                            {{ restaurant.rating }}                <br><br>
-                            {% for r in restaurant.reviews %}
-
-                                {{ r.stars }} <br>
-                                {{ r.review }} <br><br>
-                            {% endfor %}
-
+                            Общий рейтинг рессторана: {{ restaurant.rating }}                <br><br>
                         {% else %}
-                            <br>Отзывов на ресторан нет. Будьте первым кто оставит отзыв.
+                            <br>Звездочки должны быть белыми (а с оценкой желтые).
                         {% endif %}
                         <br>
-
+                        Адрес ресторана.
+                        Общий чек.
+                        Описание ресторана - доделать!
                         <br>
                                 --------------------------------------------------------------------------------------
                         <br>
                         <br>
                     {% endfor %}
+                ====================================================================================<br><br>
             </div>
             <br>
         </body>

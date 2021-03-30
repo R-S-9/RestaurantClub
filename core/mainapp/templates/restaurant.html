@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+{% extends "base.html" %}
+{% load static %}
+{% csrf_token %}
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Ресторан {{ restaurant_name }}{% endblock %}</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
+    </head>
+
+    {% block content %}
+    <body>
+    {% for restaurant in data %}
+    {% if restaurant %}
+    Ресторан {{ restaurant.restaurant_name }}.<br>
+    Меню:<br>
+    {{ restaurant.menu|linebreaks }}
+    <form method="POST">
+    <a href="{% url 'feedback' rest_name=restaurant.restaurant_name %}">Оставить отзыв.</a><br><br>
+    </form>
+    {% endif %}
+    {% if restaurant.reviews.exists %}
+    Общий рейтинг рессторана: {{ restaurant.rating }} /5<br><br>
+    {% for r in restaurant.reviews %}
+
+    {{ r.stars }} <br>
+    {{ r.review }} <br><br>
+    {% endfor %}
+
+    {% else %}
+    <br><a>Отзывов на ресторан нет. Будьте первым кто оставит отзыв.</a>
+    {% endif %}
+    <br>
+
+    --------------------------------------------------------------------------------------
+    <br>
+    <br>
+    {% endfor %}
+    </body>
+    {% endblock %}
+</html>

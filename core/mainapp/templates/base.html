@@ -14,17 +14,22 @@
         <body>
             <form action="{% url 'search_results_view' %}" method="POST">
                 <input name="search" placeholder="Искать здесь..." type="search">
-                <!--<input class="" type="submit" value="Поиск" onclick="window.location.href = 'http://127.0.0.1:8000/search/';"> -->
             </form>
             {% if errors %}
                 {{ errors }}
             {% endif %}
-            {% for index in menu %}
-                <p>{{ index.menu }}</p><br>
-                <p>{{ index.reviews }}</p><br>
-            {% endfor %}
-            {% for con in reviews %}
-                <p>{{ con.reviews }}</p><br>
+            <br>
+            Наши предложения:
+            <br>
+            <form method="POST">
+            {% for restaurant in data %}
+                <p><a href="{% url 'restaurant' rest_name=restaurant.restaurant_name %}">{{ restaurant.restaurant_name }}</a></p>
+                            Описание ресторана. Средний чек ресторана. Адрес ресторана.
+            </form>
+                {% if restaurant.reviews.exists %}
+                <p>Общий рейтинг рессторана: {{ restaurant.rating }}</p><br>
+           {% endif %}
+            ----------------------------------------------------------------------------
             {% endfor %}
         </body>
     {% endblock %}

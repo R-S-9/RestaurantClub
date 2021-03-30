@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models import Q
 
 from django.utils import timezone
 
@@ -204,7 +203,6 @@ class Reviews(models.Model):  # Review
 
     user_name = models.CharField(
         max_length=25,
-        default='NoName',
         verbose_name='Имя пользователя.',
         help_text='Напишите выдуманное имя для отзыва.',
         blank=False,
@@ -212,7 +210,6 @@ class Reviews(models.Model):  # Review
 
     stars = models.IntegerField(
         verbose_name='Оценка',
-        default=5,
         help_text='Оценка ресторана по 5 бальной шкале'
     )
 
@@ -227,17 +224,6 @@ class Reviews(models.Model):  # Review
         default=9999,
         help_text='Порядковый номер создается автоматически'
     )
-
-    @staticmethod
-    def star(data):
-        star = []
-
-        for i in Reviews.objects.all():
-            for j in data:
-                if i.id == j:
-                    star.append(i.stars)
-
-        return star
 
     def _set_order(self):
         last_order = self.__class__.objects.filter(
