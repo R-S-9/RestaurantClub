@@ -1,6 +1,7 @@
 from django.urls import path
 
-from .views import index, search_results_view, restaurants_map, accepted_review
+from .views import index, search_results_view, restaurants_map, \
+    accepted_review, search_results_view_api, restaurants_card_api
 
 
 urlpatterns = [
@@ -10,5 +11,13 @@ urlpatterns = [
     path('restaurant-<str:rest_name>-/accepted_review/',
          accepted_review,
          name='accepted_review'
-         )
+         ),
+    path('search_results_view_api/',
+         search_results_view_api,
+         name='search_results_view_api'
+         ),
+    path('restaurants_card_api/',
+         restaurants_card_api,
+         name='restaurants_card_api'
+         ),
 ]

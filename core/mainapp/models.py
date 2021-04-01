@@ -32,20 +32,6 @@ class Restaurant(models.Model):
         help_text='Средний чек.'
     )
 
-    # @staticmethod
-    # def search_restaurant_name(ids):
-    #     search = []
-    #     for idd in ids:
-    #         search.append(Restaurant.objects.filter(
-    #             restaurant_id=idd
-    #         ))
-    #
-    #     restaurant_name = []
-    #     for name in search:
-    #         restaurant_name.append(name[0])
-    #
-    #     return restaurant_name
-
     def __str__(self):
         return self.restaurant_name
 

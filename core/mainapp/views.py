@@ -1,7 +1,8 @@
-from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
-from django.db.models import Avg
-from django.db.models import Q
+from django.shortcuts import render, get_object_or_404, HttpResponseRedirect,\
+    HttpResponse
+from django.db.models import Avg, Q
 from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 
 from .models import Reviews, Restaurant
 from .forms import AddReviews
@@ -9,9 +10,9 @@ from .forms import AddReviews
 
 def index(request):
 
-    restaurants = Restaurant.objects.filter(
-        Q(reviews__stars__icontains=5)
-    ).distinct()[:5]
+    restaurants = Restaurant.objects.annotate(
+        avg_stars=Avg('reviews__stars')
+    ).order_by('-avg_stars').distinct()[:5]
 
     data = [
         {
@@ -81,12 +82,6 @@ def search_results_view(request):
             }
         )
 
-        # return JsonResponse(
-        #     {
-        #         'search_word': search_word.capitalize()
-        #     }
-        # )
-
 
 @csrf_exempt
 def restaurants_map(request, rest_name):
@@ -102,20 +97,21 @@ def restaurants_map(request, rest_name):
                 'average_check_restaurant': r.average_check_restaurant,
                 'location': r.location,
                 'menu': '\n'.join(r.dish_set.values_list('name', flat=True)),
-                'reviews': r.reviews.values('review', 'stars', 'user_name'),
+                'reviews': r.reviews.order_by('-date').values(
+                    'review', 'stars', 'user_name', 'date'
+                ),
                 'rating': float('{:.1f}'.format(
                     r.reviews.aggregate(Avg('stars'))['stars__avg']
-                )
-                ),
+                )),
                 'image': r.images.values('image_restaurant'),
             } for r in restaurant
         ]
 
         return information
 
-    if request.method == 'GET':
+    data = _data_for_rest(rest_name)
 
-        data = _data_for_rest(rest_name)
+    if request.method == 'GET':
 
         form = AddReviews()
 
@@ -147,9 +143,6 @@ def restaurants_map(request, rest_name):
             post_form.save()
             return HttpResponseRedirect("accepted_review")
         else:
-
-            data = _data_for_rest(rest_name)
-
             errors = 'Введенные вами данные не корректны:\n' \
                      'Имя должно состоять от 3 до 25 символов.\n' \
                      'Отзыв не должен превышать 255 символов.\n' \
@@ -169,3 +162,90 @@ def restaurants_map(request, rest_name):
 
 def accepted_review(request, rest_name):
     return render(request, 'accepted_review.html', {'rest_name': rest_name})
+
+
+# def index_json(request):
+#
+#     restaurants = Restaurant.objects.filter(
+#         Q(reviews__stars__icontains=5)
+#     ).distinct()[:5]
+#
+# data = [ { 'restaurant_name': r.restaurant_name, 'description_restaurant':
+# r.description_restaurant, 'average_check_restaurant':
+# r.average_check_restaurant, 'location': r.location, 'rating': float('{
+# :.1f}'.format( r.reviews.aggregate(Avg('stars'))['stars__avg']) ),
+# 'image': tuple(r.images.values_list('image_restaurant', flat=True)) } for
+# r in restaurants ]
+#
+#     return JsonResponse(dict(data=data))
+
+
+def search_results_view_api(request):
+    search_word = request.POST.get('search')
+
+    if search_word:
+        search_word = search_word.strip()
+
+    filter_ = Q(dish__name__icontains=search_word) if search_word else Q()
+    filter_dish = Q(name__icontains=search_word) if search_word else Q()
+
+    restaurants = Restaurant.objects.filter(
+        filter_
+    ).distinct()
+
+    if not restaurants.exists():
+        return HttpResponse(status=404)
+
+    data = [
+        {
+            'restaurant_name': r.restaurant_name,
+            'description_restaurant': r.description_restaurant,
+            'average_check_restaurant': r.average_check_restaurant,
+            'location': r.location,
+            'dish': ', '.join(r.dish_set.filter(
+                filter_dish
+            ).values_list('name', flat=True)),
+            'menu': ', '.join(r.dish_set.values_list('name', flat=True)),
+            'reviews': [{
+                'review': rs.review, 'stars': rs.stars,
+            } for rs in r.reviews.order_by('-date')],
+            'rating': float('{:.1f}'.format(
+                r.reviews.aggregate(Avg('stars'))['stars__avg']
+            )),
+            'image': tuple(r.images.values_list('image_restaurant', flat=True))
+        } for r in restaurants
+    ]
+
+    return JsonResponse(dict(data=data))
+
+
+def restaurants_card_api(request):
+
+    rest_id = request.POST.get('rest_id')
+
+    r = Restaurant.objects.filter(
+        restaurant_id=rest_id
+    ).first()
+
+    if not r:
+        return HttpResponse(status=404)
+
+    information = {
+            'restaurant_name': r.restaurant_name,
+            'description_restaurant': r.description_restaurant,
+            'average_check_restaurant': r.average_check_restaurant,
+            'location': r.location,
+            'menu': '\n'.join(r.dish_set.values_list('name', flat=True)),
+            'reviews': [{
+                'review': rs.review, 'stars': rs.stars,
+                'user_name': rs.user_name, 'date': rs.date
+            } for rs in r.reviews.order_by('-date')],
+            'rating': float('{:.1f}'.format(
+                r.reviews.aggregate(Avg('stars'))['stars__avg']
+            )),
+            'image': tuple(r.images.values_list(
+                'image_restaurant',
+                flat=True)),
+        }
+
+    return JsonResponse(information)
