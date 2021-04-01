@@ -24,13 +24,30 @@
             <form method="POST">
             {% for restaurant in data %}
                 <p><a href="{% url 'restaurant' rest_name=restaurant.restaurant_name %}">{{ restaurant.restaurant_name }}</a></p>
-                            Описание ресторана. Средний чек ресторана. Адрес ресторана.
             </form>
+            <div class="img" >
+            {% if restaurant.image.exists %}
+                {% for imgs in restaurant.image %}
+                <img src="/media/{{ imgs.image_restaurant }}" alt="">
+            </div><br>
+            {% if restaurant.description_restaurant %}
+            Описание:<br>{{ restaurant.description_restaurant }}<br>
+            {% endif %}<br>
+            {% if restaurant.average_check_restaurant %}
+            Средний чек:<br>{{ restaurant.average_check_restaurant }} рублей.
+            {% endif %}<br><br>
+            {% if restaurant.location %}
+            Адрес:<br>{{ restaurant.location }}
+            {% endif %}<br>
+            {% endfor %}
+            {% endif %}
+
                 {% if restaurant.reviews.exists %}
                 <p>Общий рейтинг рессторана: {{ restaurant.rating }}</p><br>
            {% endif %}
             ----------------------------------------------------------------------------
             {% endfor %}
+
         </body>
     {% endblock %}
 </html>

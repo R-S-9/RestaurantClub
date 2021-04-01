@@ -3,13 +3,35 @@ input::-webkit-input-placeholder {
   font-style: italic;
   background: #E0EFCA;
 }
+
 input:-moz-placeholder {
   color: #B6C0A5;
   font-style: italic;
   background: #E0EFCA;
 }
+
 input:-ms-input-placeholder {
   color: #B6C0A5;
   font-style: italic;
   background: #E0EFCA;
+}
+
+.img{
+    margin: 10px;
+    padding: 0;
+    position: relative;
+    width:64px;
+    height:64px;
+    background: #c2c2c2;
+    border: 1px solid #000;
+    border-radius:3px;
+}
+
+.img img{
+    position: absolute;
+    left:50%;
+    top:50%;
+    transform: translate(-50%, -50%);
+    max-width:100%;
+    max-height: 100%;
 }

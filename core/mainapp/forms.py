@@ -19,7 +19,7 @@ class AddReviews(forms.ModelForm):
 				'Звезды ставятся по 5 бальной шкале.'
 			)
 		if (len(str(self.cleaned_data.get('user_name'))) > 25) or (
-				len(str(self.cleaned_data.get('user_name'))) < 3):
+				len(str(self.cleaned_data.get('user_name'))) < 1):
 			raise forms.ValidationError(
 				'Имя должно быть от 3 до 25 символов.'
 			)

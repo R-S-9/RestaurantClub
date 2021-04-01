@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 from django.db.models import Avg
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
@@ -17,9 +17,13 @@ def index(request):
         {
             'restaurant_name': r.restaurant_name,
             'reviews': r.reviews.values('review', 'stars'),
+            'description_restaurant': r.description_restaurant,
+            'average_check_restaurant': r.average_check_restaurant,
+            'location': r.location,
             'rating': float('{:.1f}'.format(
                         r.reviews.aggregate(Avg('stars'))['stars__avg'])
-                        )
+                        ),
+            'image': r.images.values('image_restaurant'),
         } for r in restaurants
     ]
 
@@ -43,7 +47,7 @@ def search_results_view(request):
 
         restaurants = Restaurant.objects.filter(
             dish__name__icontains=search_word
-        )
+        ).distinct()
 
         if not restaurants.exists() or search_word == '':
             errors = 'Введенного вами блюда, не найдено.'
@@ -52,6 +56,9 @@ def search_results_view(request):
         restaurants_data = [
             {
                 'restaurant_name': r.restaurant_name,
+                'description_restaurant': r.description_restaurant,
+                'average_check_restaurant': r.average_check_restaurant,
+                'location': r.location,
                 'dish': ', '.join(r.dish_set.filter(
                     name__icontains=search_word
                 ).values_list('name', flat=True)),
@@ -60,7 +67,8 @@ def search_results_view(request):
                 'rating': float('{:.1f}'.format(
                     r.reviews.aggregate(Avg('stars'))['stars__avg']
                     )
-                )
+                ),
+                'image': r.images.values('image_restaurant'),
             } for r in restaurants
         ]
 
@@ -80,43 +88,45 @@ def search_results_view(request):
         # )
 
 
+@csrf_exempt
 def restaurants_map(request, rest_name):
-    if request.method == 'GET' or 'POST':
-
+    def _data_for_rest(rest):
         restaurant = Restaurant.objects.filter(
-            restaurant_name__icontains=rest_name
+            restaurant_name__icontains=rest
         )
 
-        data = [
+        information = [
             {
                 'restaurant_name': r.restaurant_name,
+                'description_restaurant': r.description_restaurant,
+                'average_check_restaurant': r.average_check_restaurant,
+                'location': r.location,
                 'menu': '\n'.join(r.dish_set.values_list('name', flat=True)),
-                'reviews': r.reviews.values('review', 'stars'),
+                'reviews': r.reviews.values('review', 'stars', 'user_name'),
                 'rating': float('{:.1f}'.format(
                     r.reviews.aggregate(Avg('stars'))['stars__avg']
-                    )
                 )
+                ),
+                'image': r.images.values('image_restaurant'),
             } for r in restaurant
         ]
+
+        return information
+
+    if request.method == 'GET':
+
+        data = _data_for_rest(rest_name)
+
+        form = AddReviews()
 
         return render(
             request,
             'restaurant.html',
             {
                 'data': data,
+                'form': form,
             }
         )
-
-
-@csrf_exempt
-def feedback_restaurant(request, rest_name):
-    if request.method == "GET":
-
-        form = AddReviews()
-        return render(request, 'feedback.html', {
-            'restaurant_name': rest_name,
-            'form': form,
-        })
 
     if request.method == "POST":
         postForm = AddReviews(request.POST)
@@ -135,28 +145,27 @@ def feedback_restaurant(request, rest_name):
             post_form.post = post, request.POST
             post_form.id_restaurant = post
             post_form.save()
-            return restaurants_map(request, rest_name)
+            return HttpResponseRedirect("accepted_review")
         else:
-            errors = 'Введенные вами данные не корректны.\n' \
+
+            data = _data_for_rest(rest_name)
+
+            errors = 'Введенные вами данные не корректны:\n' \
                      'Имя должно состоять от 3 до 25 символов.\n' \
                      'Отзыв не должен превышать 255 символов.\n' \
                      'Ресторан оценивается по 5 бальной шкале.\n'
 
             form = AddReviews()
 
-            return render(request, 'feedback.html', {
-                'errors': errors,
-                'restaurant_name': rest_name,
-                'form': form,
-            }
-                          )
-    else:
-        form = AddReviews()
+            return render(
+                request, 'restaurant.html',
+                {
+                    'data': data,
+                    'form': form,
+                    'errors': errors,
+                }
+            )
 
-        return render(
-            request, 'feedback.html',
-            {
-                'restaurant_name': rest_name,
-                'form': form,
-            }
-                      )
+
+def accepted_review(request, rest_name):
+    return render(request, 'accepted_review.html', {'rest_name': rest_name})

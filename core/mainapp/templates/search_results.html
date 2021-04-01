@@ -27,6 +27,22 @@
                         {% if restaurant.dish %}
                             <a href="{% url 'restaurant' rest_name=restaurant.restaurant_name %}">{{ restaurant.restaurant_name }}</a><br> блюдо - {{ restaurant.dish }}.<br>
                         {% endif %}<br>
+                    <div class="img" >
+                        {% if restaurant.image.exists %}
+                        {% for imgs in restaurant.image %}
+                        <img src="/media/{{ imgs.image_restaurant }}" alt="">
+                    </div>
+                    {% if restaurant.description_restaurant %}
+                    Описание:<br>{{ restaurant.description_restaurant }}<br>
+                    {% endif %}<br>
+                    {% if restaurant.average_check_restaurant %}
+                    Средний чек:<br>{{ restaurant.average_check_restaurant }} рублей.
+                    {% endif %}<br><br>
+                    {% if restaurant.location %}
+                    Адрес:<br>{{ restaurant.location }}
+                    {% endif %}<br><br>
+                        {% endfor %}
+                        {% endif %}
 
                 </form>
                         {% if restaurant.reviews.exists %}
@@ -34,11 +50,6 @@
                         {% else %}
                             <br>Звездочки должны быть белыми (а с оценкой желтые).
                         {% endif %}
-                        <br>
-                        Адрес ресторана.
-                        Общий чек.
-                        Описание ресторана - доделать!
-                        <br>
                                 --------------------------------------------------------------------------------------
                         <br>
                         <br>
