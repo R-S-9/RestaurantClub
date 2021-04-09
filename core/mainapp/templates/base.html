@@ -33,6 +33,9 @@
             {% if restaurant.description_restaurant %}
             Описание:<br>{{ restaurant.description_restaurant }}<br>
             {% endif %}<br>
+            {% if restaurant.about_restaurant %}
+            Полное описание:<br>{{ restaurant.about_restaurant }}<br>
+            {% endif %}<br>
             {% if restaurant.average_check_restaurant %}
             Средний чек:<br>{{ restaurant.average_check_restaurant }} рублей.
             {% endif %}<br><br>
@@ -44,7 +47,11 @@
 
                 {% if restaurant.reviews.exists %}
                 <p>Общий рейтинг рессторана: {{ restaurant.rating }}</p><br>
-           {% endif %}
+           {% else %}
+            {% for i in restaurant.menu.rating_of %}
+            {{ i }}<br>
+            {% endfor %}
+            {% endif %}<br><br>
             ----------------------------------------------------------------------------
             {% endfor %}
 

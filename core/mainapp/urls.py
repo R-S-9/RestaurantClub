@@ -1,7 +1,8 @@
 from django.urls import path
 
 from .views import index, search_results_view, restaurants_map, \
-    accepted_review, search_results_view_api, restaurants_card_api
+    accepted_review, search_results_view_api, restaurants_card_api, \
+    create_review
 
 
 urlpatterns = [
@@ -19,5 +20,9 @@ urlpatterns = [
     path('restaurants_card_api/',
          restaurants_card_api,
          name='restaurants_card_api'
+         ),
+    path('create_review/',
+         create_review,
+         name='create_review'
          ),
 ]

@@ -22,9 +22,17 @@ class Restaurant(models.Model):
     )
 
     description_restaurant = models.CharField(
-        max_length=150,
-        verbose_name='Описание.',
-        help_text='Описание ресторана.'
+        max_length=50,
+        verbose_name='Описание кухни.',
+        help_text='Описание кухни ресторана.'
+    )
+
+    about_restaurant = models.CharField(
+        max_length=250,
+        verbose_name='Описание ресторана.',
+        help_text='Полное описание ресторана.',
+        blank=False,
+        default=''
     )
 
     average_check_restaurant = models.IntegerField(
@@ -40,132 +48,17 @@ class Restaurant(models.Model):
         verbose_name_plural = 'Рестораны.'
 
 
-# class Menu(models.Model):
-#     """Меню."""
-#
-#     id_menu = models.ForeignKey(
-#         Restaurant,
-#         verbose_name='Меню ресторана',
-#         on_delete=models.CASCADE,
-#         blank=False,
-#         help_text='Выберите ресторан',
-#         related_name='menus'
-#     )
-#
-#     @staticmethod
-#     def restaurant_search(menu):
-#         """Функция поиска отзывов о ресторанах, выводимыми пользователям."""
-#         found = []
-#         ids = []
-#         review_found = []
-#
-#         for user in Menu.objects.select_related().all().iterator():
-#             if user in menu:
-#                 Restaurant.objects.filter(
-#                     restaurant_id=user.id
-#                 ).order_by('restaurant_id')
-#
-#                 ids.append(user.id)
-#
-#         for i in ids:
-#             if i:
-#                 found.append(Reviews.objects.filter(
-#                     id_restaurant=ids[0]
-#                 ))
-#
-#         for i in found[0]:
-#             review_found.append([i.review])
-#
-#         # for i in review:
-#         # 	# print(i.id)
-#         # 	# print('\n')
-#         # 	for j in ids:
-#         # 		# print(j)
-#         #
-#         # 		if i.id == j:
-#         # 			print(str(i.id) + ' ' + str(j))
-#         # 			print('yes')
-#         #
-#         # # print(review)
-#         # # print(ids)
-#         # for i in review:
-#         # 	# print(i)
-#         # 	# print(ids)
-#         # 	for j in ids:
-#         # 		# print(j)
-#         # 		if i.id == j:
-#         # 			# print(j)
-#         # 			# print(i.review)
-#         # 			review_found.append([i.review])
-#         #
-#         # # print(Restaurant[ids])
-#         # print(ids)
-#
-#         res_name = Restaurant.search_restaurant_name(ids)
-#
-#         return review_found, Reviews.star(ids), res_name
-#
-#     @classmethod
-#     def get_data(cls, search_word):
-#         """Функция для поиска блюда, введенного пользователем."""
-#         menu = cls.objects.filter(
-#             Q(menu__icontains=search_word) | Q(menu__iexact=search_word)
-#         )
-#
-#         if menu.exists():
-#             return menu, cls._receiving_and_processing_data(menu, search_word)
-#
-#         return None
-#
-#     @staticmethod
-#     def _receiving_and_processing_data(data, search_word):
-#         """Функция для обработки данных по введеным критериям."""
-#         print(data)
-#         print(search_word)
-#         def processing_keyword(information, words):
-#             search_all_word = []
-#             output = []
-#
-#             # Writing all words to the list.
-#             for content in information:
-#                 search_all_word.append(content.menu)
-#
-#             for content in search_all_word:
-#                 output.append(content)
-#
-#             information = look(output, words)
-#
-#             return information
-#
-#         def look(search, words):
-#             lol = []
-#
-#             for i in search:
-#                 if (re.findall(words.lower(), str(i))) \
-#                         or (re.findall(words.capitalize(), str(i))) \
-#                         or (re.findall(words, str(i))):
-#                     lol.append(re.split(r'\r\n', i))
-#
-#             search = []
-#             for i in lol:
-#                 for j in i:
-#                     if re.findall(words, j):
-#                         search.append(j)
-#
-#             return search
-#
-#         return processing_keyword(data, search_word)
-#
-#     def __str__(self):
-#         return f'Меню {self.id_menu}'
-#
-#     class Meta:
-#         verbose_name = 'Меню'
-#         verbose_name_plural = 'Меню'
-
-
 class Dish(models.Model):
-    name = models.CharField(verbose_name='Название.', max_length=50, )
+    name = models.CharField(
+        verbose_name='Название.',
+        max_length=50,
+    )
+
+    check = models.IntegerField(
+        verbose_name='Цена.',
+        default=0,
+        help_text='Цена блюда.'
+    )
 
     menu = models.ForeignKey(
         Restaurant,
@@ -240,13 +133,13 @@ class Reviews(models.Model):  # Review
         super(Reviews, self).save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.id_restaurant}'
+        return f'{self.id_restaurant} {self.review}'
 
     class Meta:
         verbose_name = ' отзыв.'
         verbose_name_plural = 'Отзывы.'
         unique_together = ('id_restaurant', 'order')
-        ordering = ('order',)
+        ordering = ('-order',)
 
 
 class Image(models.Model):
@@ -278,4 +171,3 @@ class Image(models.Model):
     class Meta:
         verbose_name = 'Картинка.'
         verbose_name_plural = 'Картинки.'
-

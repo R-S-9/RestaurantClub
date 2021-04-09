@@ -24,7 +24,12 @@
             {% endfor %}
             {% endif %}<br>
     Меню:<br>
-    {{ restaurant.menu|linebreaks }}
+        {% if restaurant.menu.exists  %}
+        {% for i in restaurant.menu %}
+        {{ i.name }} - {{ i.check }}<br>
+
+        {% endfor %}
+    {% endif %}<br><br>
     {% if restaurant.description_restaurant %}
     Описание:<br>{{ restaurant.description_restaurant }}<br>
     {% endif %}<br>
