@@ -1,62 +1,100 @@
 <!DOCTYPE html>
 
-{% extends "base.html" %}
 {% load static %}
 {% csrf_token %}
 
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %} RestaurantClub {% endblock %}</title>
-        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
-    </head>
+<head>
+<meta charset="UTF-8">
+<title>{% block title %} RestaurantClub {% endblock %}</title>
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/style_search.css' %}"/>
+</head>
 
     {% block content %}
-        <body>
-            <div>
-                Главная стриница поиска.<br>
-                Вы искали:
-                {% if search_word %}
-                    {{ search_word }}.<br>
-                {% endif %}
-                                Мы подобрали по вашему поиску блюда из ресторанов:
-<br><br>
-                =================================================================================<br><br>
-                <form method="POST">
-                        {% for restaurant in data %}
-                        {% if restaurant.dish %}
-                            <a href="{% url 'restaurant' rest_name=restaurant.restaurant_name %}">{{ restaurant.restaurant_name }}</a><br> блюдо - {{ restaurant.dish }}.<br>
-                        {% endif %}<br>
-                    <div class="img" >
-                        {% if restaurant.image.exists %}
-                        {% for imgs in restaurant.image %}
-                        <img src="/media/{{ imgs.image_restaurant }}" alt="">
-                    </div>
-                    {% if restaurant.description_restaurant %}
-                    Описание:<br>{{ restaurant.description_restaurant }}<br>
-                    {% endif %}<br>
-                    {% if restaurant.average_check_restaurant %}
-                    Средний чек:<br>{{ restaurant.average_check_restaurant }} рублей.
-                    {% endif %}<br><br>
-                    {% if restaurant.location %}
-                    Адрес:<br>{{ restaurant.location }}
-                    {% endif %}<br><br>
-                        {% endfor %}
-                        {% endif %}
+<body>
+	<section class="content">
+		<div class="container">
+			<div class="header">
+				<img src="/media/logo.jpg" class="logo">
+				<div class="name">RestaurantClub</div>
+				<form action="{% url 'search_results_view' %}" method="POST">
+					<input name="search" placeholder="Введите название блюда..." type="text" autocomplete="off" class="serchbar">
+					<input type="submit" class="button" value="">
+				</form>
+			</div>
+			<div class="card_container">
+				{% for restaurant in data %}
+					{% if restaurant.dish %}
+						<div class="card">
+							<div class="rest_logo" >
+								{% if restaurant.image.exists %}
+									{% for imgs in restaurant.image %}
+										<img src="/media/{{ imgs.image_restaurant }}" alt="" class="rest_pic">
+									{% endfor %}
+								{% endif %}
+							</div>
+							<div class="rest_info">
+								<div class="rest_name">
+									<a href="{% url 'restaurant' rest_name=restaurant.restaurant_name %}" class="rest_link">
+										{{ restaurant.restaurant_name }}
+									</a> 
+									{% if restaurant.reviews.exists %}
+										<div class="rest_rate">
+											<!-- Рейтинг: {{ restaurant.rating }} -->
+                            				Рейтинг: &#9733 {{ restaurant.rating }}/5		
+										</div>
+									{% else %}
+										<div class="rest_rate">
+											<a>Отзывов на ресторан нет. Будьте первым кто оставит отзыв.</a>
+										</div>
+									{% endif %}
+								</div>
+								
+								{% if restaurant.location %}
+									<div class="rest_adr">
+										{{ restaurant.location }}
+									</div>
+								{% endif %}
 
-                </form>
-                        {% if restaurant.reviews.exists %}
-                            Общий рейтинг рессторана: {{ restaurant.rating }}                <br><br>
-                        {% else %}
-                            <br>Звездочки должны быть белыми (а с оценкой желтые).
-                        {% endif %}
-                                --------------------------------------------------------------------------------------
-                        <br>
-                        <br>
-                    {% endfor %}
-                ====================================================================================<br><br>
-            </div>
-            <br>
-        </body>
+								{% if restaurant.description_restaurant %}
+									<div class="rest_opis">
+										{{ restaurant.description_restaurant }}
+									</div>
+								{% endif %}
+
+								{% if restaurant.dish %}
+									<div class="dish">
+										{{ restaurant.dish }} &#160&#160&#160&#160
+										{% if restaurant.check %}
+											{% for price in restaurant.check %} 
+												{{ price|first }}  &#8381
+											{% endfor %}
+										{% endif %}
+									</div>
+								{% endif %}
+
+
+							</div>
+						</div>
+					{% endif %}
+				{% endfor %}
+			</div>
+		</div>
+	</section>
+	<footer class="footer">
+		<div class="containerf">
+			<div class="download">
+				<a href="#"><img src="/media/appstore.png" alt=""></a>
+				<a href="#"><img src="/media/playmarket.png" alt=""></a>
+			</div>
+			<div class="copyright">
+				<p class="copyr">&copy 2021 RestaurantClub</p>
+			</div>
+			
+		</div>
+	</footer>
+</body>
     {% endblock %}
 </html>

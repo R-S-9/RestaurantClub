@@ -9,8 +9,15 @@ class AddReviews(forms.ModelForm):
 		fields = [
 			'user_name',
 			'review',
-			'stars'
+			'stars'	
 		]
+
+		widgets = {
+            'user_name': forms.TextInput(attrs={'placeholder':'Введите имя','class':'form-control'}),
+            'review': forms.Textarea(attrs={'placeholder':'Отзыв','class':'form-control-review'}),
+            'stars': forms.TextInput(attrs={'placeholder': 'Оценка',
+                                           'class': 'form-control'}),
+        }
 
 	def clean(self):
 		if (self.cleaned_data.get('stars') > 5) or (

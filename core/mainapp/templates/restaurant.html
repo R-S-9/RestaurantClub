@@ -1,73 +1,210 @@
 <!DOCTYPE html>
 
-{% extends "base.html" %}
 {% load static %}
 {% csrf_token %}
 
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Ресторан {{ restaurant_name }}{% endblock %}</title>
-        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
-    </head>
+<head>
+<meta charset="UTF-8">
+<title>{% block title %}Ресторан {{ restaurant_name }}{% endblock %}</title>
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/style_rest.css' %}"/>
+</head>
 
-    {% block content %}
-    <body>
-    {% for restaurant in data %}
-    {% if restaurant %}
-    Ресторан {{ restaurant.restaurant_name }}.<br>
-    <div class="img" >
-        {% if restaurant.image.exists %}
-        {% for imgs in restaurant.image %}
-        <img src="/media/{{ imgs.image_restaurant }}" alt="">
-    </div>
-            {% endfor %}
-            {% endif %}<br>
-    Меню:<br>
-        {% if restaurant.menu.exists  %}
-        {% for i in restaurant.menu %}
-        {{ i.name }} - {{ i.check }}<br>
 
-        {% endfor %}
-    {% endif %}<br><br>
-    {% if restaurant.description_restaurant %}
-    Описание:<br>{{ restaurant.description_restaurant }}<br>
-    {% endif %}<br>
-    {% if restaurant.average_check_restaurant %}
-    Средний чек:<br>{{ restaurant.average_check_restaurant }} рублей.
-    {% endif %}<br><br>
-    {% if restaurant.location %}
-    Адрес:<br>{{ restaurant.location }}
-    {% endif %}<br><br>
-    {% endif %}
-    Оставить отзыв:<br>
-    {% if errors %}
-        {{ errors|linebreaks }}
-    {% endif %}
-    <form method="POST" >
-    {% for i in form %}
-        {{ i }}
-    {% endfor %}
-        <p><button type="submit" class="btn-create">Создать</button></p>
-    </form>
-    {% if restaurant.reviews.exists %}
-    Общий рейтинг рессторана: {{ restaurant.rating }} /5<br><br>
-    {% for r in restaurant.reviews %}
-    {{ r.date }}<br>
-    {{ r.user_name }} поставил {{ r.stars }}. <br>
-    {{ r.review }} <br><br>
+{% block content %}
+<body>
+	<section class="content">
+		<div class="container">
+			<div class="header">
+				<img src="/media/logo.jpg" class="logo">
+				<div class="name">RestaurantClub</div>
+				<form action="{% url 'search_results_view' %}" method="POST">
+					<input name="search" placeholder="Введите название блюда..." type="text" autocomplete="off" class="serchbar">
+					<input type="submit" class="button" value="">
+				</form>
+			</div>
+			<div class="rest_info">
+				{% for restaurant in data %}
+					{% if restaurant %}
+						<div class="rest_nalore">
+							<div class="background1">
+								<div class="rest_name">
+									{{ restaurant.restaurant_name }}
+								</div>
+							</div>
+							<div class="background2">
+								<div class="rest_logo" >
+									{% if restaurant.image.exists %}
+										{% for imgs in restaurant.image %}
+										<img src="/media/{{ imgs.image_restaurant }}" class="rest_pic" alt="">
+										{% endfor %}
+									{% endif %}
+								</div>
+							</div>
+									
+							{% if restaurant.reviews.exists %}
+								<div class="background3">
+									<div class="rest_rate">
+										Рейтинг: &#9733 {{ restaurant.rating }} /5
+									</div>
+								</div>
+							{% else %}
+								<div class="background3">
+									<div class="rest_rate">
+										<a>Отзывов пока нет</a>
+									</div>
+								</div>
+							{% endif %}
+						</div>
+					
+						<div class="big_info">
+							<div class="info_container">
 
-    {% endfor %}
+								{% if restaurant.location %}
+									<div class="rest_adr">
+										<span class="pf">Адрес:</span> {{ restaurant.location }}
+									</div>
+								{% endif %}
+								
+								{% if restaurant.about_restaurant %}
+									<div class="rest_opis">
+										{{ restaurant.about_restaurant }}
+									</div>
+								{% endif %}
 
-    {% else %}
-    <br><a>Отзывов на ресторан нет. Будьте первым кто оставит отзыв.</a>
-    {% endif %}
-    <br>
+								{% if restaurant.average_check_restaurant %}
+									<div class="avar_check">
+										<span class="pf">Средний чек:</span> {{ restaurant.average_check_restaurant }} рублей.
+									</div>
+								{% endif %}
 
-    --------------------------------------------------------------------------------------
-    <br>
-    <br>
-    {% endfor %}
-    </body>
-    {% endblock %}
+								<div class="rest_menu">
+									<!-- Меню:
+									{{ restaurant.menu|linebreaks }} -->
+									<span class="pf">Меню:</span>
+									<a href="#" class="btn" id="but">Показать</a>
+									<div class="menu">
+										{% if restaurant.menu.exists  %}
+											{% for i in restaurant.menu %}
+												 {{ i.name }} - {{ i.check }} &#8381 <br>
+											{% endfor %}
+										{% endif %}
+									</div>
+									<script>
+										let but = document.getElementsByClassName('btn');
+										// let but = document.getElementById('but');
+										for(let i=0; i<but.length; i++){
+											but[i].addEventListener('click', function(){
+												this.classList.toggle('active');
+												let menu = this.nextElementSibling;
+												if(menu.style.maxHeight){
+													menu.style.maxHeight = null;
+												}else{
+													menu.style.maxHeight = menu.scrollHeight + 'px';
+													but.innerHTML="Скрыть"
+												}	
+											})
+										}
+									</script>								
+								</div>
+								<!-- {% if restaurant.description_restaurant %}
+									<div class="rest_opis">
+										Описание: {{ restaurant.description_restaurant }}
+									</div>
+								{% endif %} -->
+
+								
+
+								
+								
+								<!-- {% if restaurant.about_restaurant %}
+									<div class="fulopis_rest">
+										Полное описание: {{ restaurant.about_restaurant }}
+									</div>
+								{% endif %} -->
+								<div class="feedback">
+									<div class="pff">Оставить отзыв:</div> 
+									
+									{% if errors %}
+										{{ errors|linebreaks }}
+									{% endif %}
+									<div class="form">
+										<form method="POST" action="{% url 'restaurant' rest_name=restaurant.restaurant_name %}" >
+										
+											{% for i in form %}
+												<div class="pole"> 
+													{{i}}
+												</div>
+											{% endfor %}
+												
+									</div>
+											<p><button type="submit" class="btn-create">Опубликовать</button></p>
+										</form>
+								
+									<!-- ================НОВЫЙ================================== -->
+										{% if restaurant.reviews.exists %}
+										<span class="pf">Общий рейтинг рессторана: &#9733 {{ restaurant.rating }} /5</span><br><br>
+												{% for r in restaurant.reviews %}
+													<div class="review">
+														<span class="rev1"> {{ r.date }}</span> <br>
+														<span class="pf">{{ r.user_name }}</span> поставил {{ r.stars }} <br>
+														{{ r.review }} <br>
+													</div>
+												{% endfor %}
+										{% else %}
+										<div class="review">
+											<span class="pf">Отзывов на ресторан нет. Будьте первым кто оставит отзыв.</span>
+										</div>
+										{% endif %}
+										<!-- <form action="{% url 'restaurant' rest_name=restaurant.restaurant_name %}" method="POST">
+											<input type="text" class="test" placeholder="Тестовая">
+											
+										</form> -->
+								</div>
+
+							</div>
+						</div>
+					{% endif %}
+				{% endfor %}
+						
+			</div>
+		</div>
+	</section>
+	<footer class="footer">
+		<div class="containerf">
+			<div class="download">
+				<a href="#"><img src="/media/appstore.png" alt=""></a>
+				<a href="#"><img src="/media/playmarket.png" alt=""></a>
+			</div>
+			<div class="copyright">
+				<p class="copyr">&copy 2021 RestaurantClub</p>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+{% endblock %}
 </html>
+
+
+
+
+
+
+
+
+
+
+	<!-- {% if restaurant.reviews.exists %}
+				Общий рейтинг рессторана: {{ restaurant.rating }} /5<br><br>
+				{% for r in restaurant.reviews %}
+				{{ r.date }}<br>
+				{{ r.user_name }} поставил {{ r.stars }}. <br>
+				{{ r.review }} <br><br>
+				{% endfor %}-->
+
+				<!-- {% else %}
+				<br><a>Отзывов на ресторан нет. Будьте первым кто оставит отзыв.</a>
+				{% endif %} -->

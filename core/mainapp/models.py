@@ -22,13 +22,13 @@ class Restaurant(models.Model):
     )
 
     description_restaurant = models.CharField(
-        max_length=50,
+        max_length=150,
         verbose_name='Описание кухни',
         help_text='Описание кухни ресторана'
     )
 
-    about_restaurant = models.CharField(
-        max_length=250,
+    about_restaurant = models.TextField(
+        max_length=3000,
         verbose_name='Описание ресторана',
         help_text='Полное описание ресторана',
         blank=False,

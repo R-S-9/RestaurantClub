@@ -18,7 +18,7 @@ def index(request):
     for r in restaurants:
         rate = r.reviews.aggregate(Avg('stars'))['stars__avg']
         if rate is None:
-            rating = 'Нету'
+            rating = True
         else:
             rating = float('{:.1f}'.format(rate))
 
@@ -26,7 +26,6 @@ def index(request):
             'restaurant_name': r.restaurant_name,
             'reviews': r.reviews.values('review', 'stars'),
             'description_restaurant': r.description_restaurant,
-            'about_restaurant': r.about_restaurant,
             'average_check_restaurant': r.average_check_restaurant,
             'location': r.location,
             'rating': rating,
@@ -59,30 +58,55 @@ def search_results_view(request):
             errors = 'Введенного вами блюда, не найдено.'
             return render(request, 'base.html', {'errors': errors})
 
-        restaurants_data = [
-            {
+        data = []
+
+        for r in restaurants:
+            rate = r.reviews.aggregate(Avg('stars'))['stars__avg']
+            if rate is None:
+                rating = True
+            else:
+                rating = float('{:.1f}'.format(rate))
+
+            data.append({
                 'restaurant_name': r.restaurant_name,
-                'description_restaurant': r.description_restaurant,
-                'average_check_restaurant': r.average_check_restaurant,
-                'location': r.location,
+                'reviews': r.reviews.values('review', 'stars'),
                 'dish': ', '.join(r.dish_set.filter(
                     name__icontains=search_word
                 ).values_list('name', flat=True)),
                 'menu': ', '.join(r.dish_set.values_list('name', flat=True)),
-                'reviews': r.reviews.values('review', 'stars'),
-                'rating': float('{:.1f}'.format(
-                    r.reviews.aggregate(Avg('stars'))['stars__avg']
-                    )
-                ),
+                'description_restaurant': r.description_restaurant,
+                'about_restaurant': r.about_restaurant,
+                'average_check_restaurant': r.average_check_restaurant,
+                'location': r.location,
+                'rating': rating,
                 'image': r.images.values('image_restaurant'),
-            } for r in restaurants
-        ]
+				'check': r.dish_set.values_list('check')[0:1],
+            })
+
+        # restaurants_data = [
+        #     {
+        #         'restaurant_name': r.restaurant_name,
+        #         'description_restaurant': r.description_restaurant,
+        #         'average_check_restaurant': r.average_check_restaurant,
+        #         'location': r.location,
+        #         'dish': ', '.join(r.dish_set.filter(
+        #             name__icontains=search_word
+        #         ).values_list('name', flat=True)),
+        #         'menu': ', '.join(r.dish_set.values_list('name', flat=True)),
+        #         'reviews': r.reviews.values('review', 'stars'),
+        #         'rating': float('{:.1f}'.format(
+        #             r.reviews.aggregate(Avg('stars'))['stars__avg']
+        #             )
+        #         ),
+        #         'image': r.images.values('image_restaurant'),
+        #     } for r in restaurants
+        # ]
 
         return render(
             request,
             'search_results.html',
             {
-                'data': restaurants_data,
+                'data': data,
                 'search_word': search_word.capitalize()
             }
         )

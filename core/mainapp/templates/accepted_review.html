@@ -6,11 +6,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title></title>
+	<script>
+		document.location.replace("{% url 'restaurant' rest_name=rest_name %}")
+	</script>
 </head>
 {% block content %}
 <body>
-        Спасибо за отзыв к ресторану: <a href="{% url 'restaurant' rest_name=rest_name %}">{{ rest_name }}</a><br>
+        <!-- Спасибо за отзыв к ресторану: <a href="{% url 'restaurant' rest_name=rest_name %}">{{ rest_name }}</a><br> -->
 </body>
 {% endblock %}
 </html>
