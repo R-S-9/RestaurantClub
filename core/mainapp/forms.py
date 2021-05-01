@@ -9,29 +9,39 @@ class AddReviews(forms.ModelForm):
 		fields = [
 			'user_name',
 			'review',
-			'stars'	
+			'stars'
 		]
 
 		widgets = {
-            'user_name': forms.TextInput(attrs={'placeholder':'Введите имя','class':'form-control'}),
-            'review': forms.Textarea(attrs={'placeholder':'Отзыв','class':'form-control-review'}),
-            'stars': forms.TextInput(attrs={'placeholder': 'Оценка',
-                                           'class': 'form-control'}),
-        }
+			'user_name': forms.TextInput(attrs={
+				'placeholder': 'Введите имя',
+				'class': 'form-control'
+			}),
+			'review': forms.Textarea(attrs={
+				'placeholder': 'Отзыв',
+				'class': 'form-control-review'
+			}),
+			'stars': forms.TextInput(attrs={
+				'placeholder': 'Оценка',
+				'class': 'form-control',
+				'type': 'number'
+			}),
+		}
 
 	def clean(self):
 		if (self.cleaned_data.get('stars') > 5) or (
-				self.cleaned_data.get('stars') < 1):
+				self.cleaned_data.get('stars') < 1) and \
+				str(self.cleaned_data.get('stars')).isdigit():
 			raise forms.ValidationError(
-				'Звезды ставятся по 5 бальной шкале.'
+				'Звезды ставятся по 5 бальной шкале цифрами.'
 			)
 		if (len(str(self.cleaned_data.get('user_name'))) > 25) or (
 				len(str(self.cleaned_data.get('user_name'))) < 1):
 			raise forms.ValidationError(
 				'Имя должно быть от 3 до 25 символов.'
 			)
-		if (len(str(self.cleaned_data.get('user_name'))) > 255) or (
-				len(str(self.cleaned_data.get('user_name'))) < 1):
+		if (len(str(self.cleaned_data.get('review'))) > 255) or (
+				len(str(self.cleaned_data.get('review'))) < 1):
 			raise forms.ValidationError(
 				'Отзыв не должен превышать 255 символов.'
 			)
