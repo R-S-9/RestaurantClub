@@ -8,7 +8,7 @@ from .models import Reviews, Restaurant
 from .forms import AddReviews
 
 
-def index(request):
+def main_map_restaurants(request):
 
     restaurants = Restaurant.objects.annotate(
         avg_stars=Avg('reviews__stars')
@@ -178,6 +178,43 @@ def restaurants_map(request, rest_name):
 
 def accepted_review(request, rest_name):
     return render(request, 'accepted_review.html', {'rest_name': rest_name})
+
+
+def main_map_restaurants_api(request):
+    if request.method == 'GET':
+        restaurants = Restaurant.objects.annotate(
+            avg_stars=Avg('reviews__stars')
+        ).order_by('-avg_stars').distinct()[:5]
+
+        if not restaurants:
+            return HttpResponse(status=400)
+
+        data = []
+
+        for r in restaurants:
+            rate = r.reviews.aggregate(Avg('stars'))['stars__avg']
+            if rate is None:
+                rating = True
+            else:
+                rating = float('{:.1f}'.format(rate))
+
+            data.append({
+                'restaurant_name': r.restaurant_name,
+                'reviews': [{
+                    'review': rs.review, 'stars': rs.stars,
+                } for rs in r.reviews.order_by('-date')],
+                'description_restaurant': r.description_restaurant,
+                'average_check_restaurant': r.average_check_restaurant,
+                'location': r.location,
+                'rating': rating,
+                'image': tuple(r.images.values_list(
+                    'image_restaurant',
+                    flat=True
+                ))
+            })
+        return JsonResponse(dict(data=data))
+    else:
+        return HttpResponse(status=400)
 
 
 def search_results_view_api(request):
