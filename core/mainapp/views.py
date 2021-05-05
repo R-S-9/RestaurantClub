@@ -62,33 +62,36 @@ def search_results_view(request):
 
         for r in restaurants:
             rate = r.reviews.aggregate(Avg('stars'))['stars__avg']
+
             if rate is None:
                 rating = True
             else:
                 rating = float('{:.1f}'.format(rate))
 
+            dish = r.dish_set.filter(
+                name__icontains=search_word
+            ).values('name', 'check')
+
             data.append({
-                'restaurant_name': r.restaurant_name,
-                'reviews': r.reviews.values('review', 'stars'),
-                'dish': ', '.join(r.dish_set.filter(
-                    name__icontains=search_word
-                ).values_list('name', flat=True)),
-                'menu': ', '.join(r.dish_set.values_list('name', flat=True)),
-                'description_restaurant': r.description_restaurant,
-                'about_restaurant': r.about_restaurant,
-                'average_check_restaurant': r.average_check_restaurant,
-                'location': r.location,
-                'rating': rating,
-                'image': r.images.values('image_restaurant'),
-                'check': r.dish_set.values_list('check')[0:1],
-            })
+                    'restaurant_name': r.restaurant_name,
+                    'reviews': r.reviews.values('review', 'stars'),
+                    'dish': [
+                        {'name': i['name'], 'check': i['check']} for i in dish
+                    ],
+                    'description_restaurant': r.description_restaurant,
+                    'about_restaurant': r.about_restaurant,
+                    'average_check_restaurant': r.average_check_restaurant,
+                    'location': r.location,
+                    'rating': rating,
+                    'image': r.images.values('image_restaurant'),
+                })
 
         return render(
             request,
             'search_results.html',
             {
                 'data': data,
-                'search_word': search_word.capitalize()
+                'search_word': search_word.capitalize(),
             }
         )
 
@@ -194,7 +197,7 @@ def main_map_restaurants_api(request):
         for r in restaurants:
             rate = r.reviews.aggregate(Avg('stars'))['stars__avg']
             if rate is None:
-                rating = True
+                rating = -1
             else:
                 rating = float('{:.1f}'.format(rate))
 
@@ -218,6 +221,10 @@ def main_map_restaurants_api(request):
 
 
 def search_results_view_api(request):
+
+    if request.method != 'POST':
+        return HttpResponse(status=400)
+
     search_word = request.POST.get('search')
 
     if search_word:
@@ -233,25 +240,33 @@ def search_results_view_api(request):
     if not restaurants.exists():
         return HttpResponse(status=404)
 
-    data = [
-        {
-            'restaurant_name': r.restaurant_name,
-            'description_restaurant': r.description_restaurant,
-            'average_check_restaurant': r.average_check_restaurant,
-            'location': r.location,
-            'dish': ', '.join(r.dish_set.filter(
-                filter_dish
-            ).values_list('name', flat=True)),
-            'menu': ', '.join(r.dish_set.values_list('name', flat=True)),
-            'reviews': [{
-                'review': rs.review, 'stars': rs.stars,
-            } for rs in r.reviews.order_by('-date')],
-            'rating': float('{:.1f}'.format(
-                r.reviews.aggregate(Avg('stars'))['stars__avg']
-            )),
-            'image': tuple(r.images.values_list('image_restaurant', flat=True))
-        } for r in restaurants
-    ]
+    data = []
+
+    for r in restaurants:
+        rate = r.reviews.aggregate(Avg('stars'))['stars__avg']
+        if rate is None:
+            rating = -1
+        else:
+            rating = float('{:.1f}'.format(rate))
+
+        data.append({
+                'restaurant_name': r.restaurant_name,
+                'description_restaurant': r.description_restaurant,
+                'average_check_restaurant': r.average_check_restaurant,
+                'location': r.location,
+                'dish': ', '.join(r.dish_set.filter(
+                    filter_dish
+                ).values_list('name', flat=True)),
+                'reviews': [{
+                    'review': rs.review, 'stars': rs.stars,
+                } for rs in r.reviews.order_by('-date')],
+                'rating': rating,
+                'image': tuple(r.images.values_list(
+                    'image_restaurant',
+                    flat=True
+                ))
+            }
+        )
 
     return JsonResponse(dict(data=data))
 

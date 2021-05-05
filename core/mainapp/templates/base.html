@@ -6,6 +6,7 @@
 <html lang="ru">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<title>{% block title %} RestaurantClub {% endblock %}</title>
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -14,15 +15,24 @@
 
     {% block content %}
         <body>
+		<div class="wrapper">
 			<section class="content">
 				<div class="container">
 					<div class="header">
-						<img src="/media/logo.jpg" class="logo">
-						<div class="name">RestaurantClub</div>
-						<form action="{% url 'search_results_view' %}" method="POST">
-							<input name="search" placeholder="Введите название блюда..." type="text" autocomplete="off" class="serchbar">
-							<input type="submit" class="button" value="">
-						</form>
+						<div class="main_logo">
+							<img src="/media/logo.jpg" class="logo">
+						</div>
+						<div class="block">
+							<div class="name">
+								<a href="{% url 'main_map_restaurants' %}">RestaurantClub</a>
+							</div>
+							<div class="serch">
+								<form action="{% url 'search_results_view' %}" method="POST">
+									<input name="search" placeholder="Введите название блюда..." type="text" autocomplete="off" class="serchbar">
+									<input type="submit" class="button" value="">
+								</form>
+							</div>
+						</div>
 						<div class="error">
 							{% if errors %}
 							<p class="errmes">{{ errors }}</p>
@@ -119,6 +129,7 @@
 					
 				</div>
 			</footer>
+		</div>
         </body>
     {% endblock %}
 </html>

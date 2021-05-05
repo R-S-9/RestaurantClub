@@ -51,7 +51,7 @@ class Restaurant(models.Model):
 class Dish(models.Model):
     name = models.CharField(
         verbose_name='Название',
-        max_length=50,
+        max_length=100,
     )
 
     check = models.IntegerField(

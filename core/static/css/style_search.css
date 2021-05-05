@@ -22,12 +22,16 @@ h1, h2, h3{
 .name{
 	margin-left: 30px;
 	margin-top: 80px;
-	color: white;
+	
 	font-size: 32px;
 	width: 219px;
 	height: 22px;
 	font-weight: bold;
 }
+.name a{
+	text-decoration: none;
+	color: white;
+} 
 .logo{
 	margin-top: 35px;
 }
@@ -81,7 +85,7 @@ input{
 	margin-top: 100px;
 	width: 1000px;
 	margin-left: 430px;
-	background-color: #49C67E
+	
 }
 
 .rest_name{

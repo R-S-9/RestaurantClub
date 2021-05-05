@@ -3,7 +3,6 @@ body{
 	margin: 0;
 	font-family: 'Roboto', sans-serif;
 	color: 000;
-	background: url('/media/group2.png') no-repeat center top;
 	z-index: 1;
 }
 h1, h2, h3{
@@ -11,24 +10,35 @@ h1, h2, h3{
 	margin: 0;
 	text-transform: uppercase;
 }
+.wrapper{
+	background: url('/media/group2.png') no-repeat center top;
+}
 .container{
 	margin: 0 auto;
 	width: 1700px;
+	
 }
 .header{
 	display: flex;
 	position: relative;
+	margin-bottom: 150px;
+}
+.block{
+	display: flex;
+    margin-top: 80px;
+    margin-left: 30px;
 }
 .name{
-	margin-left: 30px;
-	margin-top: 80px;
-	color: white;
-	font-size: 32px;
-	width: 219px;
-	height: 22px;
-	font-weight: bold;
+    margin-right: 100px;
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
 }
-.logo{
+.name a{
+	text-decoration: none;
+	color: white;
+} 
+.main_logo{
 	margin-top: 35px;
 }
 input{
@@ -37,9 +47,12 @@ input{
 	outline: none;
 	border: none;
 }
+.serch{
+	
+    margin-top: -10px;
+	
+}
 .serchbar{
-	margin-left: 100px;
-	margin-top: 70px;
 	width: 900px;
 	height: 50px;
 	border-radius: 50px;
@@ -62,7 +75,6 @@ P{
 	font-weight: bold;
 	line-height: 50px;
 	width: 550px;
-	margin-top: 170px;
 }
 .p2{
 	width: 472px;
@@ -83,6 +95,102 @@ P{
 	position: absolute;
 	top: 120px;
 	left: 335px;
+}
+/* --------------------АДАПТИВ-------------------- */
+@media screen and (max-width: 1200px) {
+	.container {
+		width: 1140px;
+	}
+
+}
+
+@media screen and (max-width: 1199px) {
+	.container {
+		width: 1060px;
+	}
+
+}
+
+@media screen and (max-width: 991px) {
+	.container {
+		width: 820px;
+		
+	}
+
+}
+
+@media screen and (max-width: 767px) {
+	.container {
+		width: 540px;
+	}
+
+}
+
+@media screen and (max-width: 575px) {
+	.container {
+		width: 100%;
+	}
+	section{
+		margin-left: 15px;
+	}
+	.wrapper{
+		background: url('/media/mobilebg2.png') no-repeat center top;
+		min-width: 100%;
+		min-height: 100%;
+		position: fixed;
+	}
+	footer{
+		display: none;
+	}
+	.block{
+		flex-direction: column;
+		margin-top: 40px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.logo {
+		height: 40px;
+	}
+	.main_logo{
+		margin-top: 25px;
+	}
+	.name{
+		margin-bottom: 20px;
+		font-size: 25px;
+		margin-right: 0;
+	}
+	input {
+		padding-left: 10px;
+		font-size: 12px;
+	}
+	.serchbar {
+		width: 200px;
+		height: 20px;
+		border-radius: 50px;
+		border: none;
+	}
+	.button{
+		background:url('/media/serchmob.png') no-repeat;
+		margin-left: -25px;
+		margin-bottom: -25px;
+		}
+		p{
+			margin-left: 0;
+		}
+		.p1 {
+			font-size: 20px;
+			font-weight: bold;
+			width: 200px;
+			line-height: 20px;
+		}
+		.p2 {
+			width: 180px;
+			font-size: 14px;
+			line-height: normal;
+		}
+
+	}
+	
 }
 
 
