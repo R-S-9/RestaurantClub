@@ -23,6 +23,7 @@ class AddReviews(forms.ModelForm):
 				'placeholder': 'Отзыв',
 				'class': 'form-control-review',
 				'maxlength': '250',
+				'width': '10',
 			}),
 			'stars': forms.TextInput(attrs={
 				'placeholder': 'Оценка',

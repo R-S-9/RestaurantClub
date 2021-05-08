@@ -11,7 +11,6 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
-	<script src="/main.js"></script>
 </head>
 
     {% block content %}
@@ -21,9 +20,7 @@
 					<div class="container">
 						<div class="header">
 							<div class="main_logo">
-								<a href="{% url 'main_map_restaurants' %}">
-									<img src="/media/logo.jpg" class="logo">
-								</a>
+								<img src="/media/logo.jpg" class="logo">
 							</div>
 							<div class="block">
 								<div class="name">
@@ -119,77 +116,6 @@
 						----------------------------------------------------------------------------
 						{% endfor %} -->
 					</div>
-					<!---------------------------------------- Слайдер ---------------------------------------->
-					<!---------------------------------------- Слайдер ---------------------------------------->
-					<div class="slider_cont">
-						<div class="slider">
-							<div class="slider__item">
-								<div class="rest_logo">
-									 <img src="/media/logo_la_maison_6GFZvKY.png" alt="">
-								</div>
-								<div class="card_cont">
-									
-									<div class="rest_name">
-										<a href="">La Maison</a>
-									</div>
-									<div class="rest_kitchen">
-										<span class="p3">Итальянская кухня</span>
-									</div>
-									<div class="rest_rate">
-										Рейтинг: &#9733 4,6 /5
-									</div>
-								</div>
-							</div>
-							<div class="slider__item">
-								<div class="rest_logo">
-									 <img src="/media/goodman_qdFVN5B_0CN37as.png" alt="">
-								</div>
-								<div class="card_cont">
-									<div class="rest_name">
-										<a href="">Goodman</a>
-									</div>
-									<div class="rest_kitchen">
-										<span class="p3">Стейк-хаус</span>
-									</div>
-									<div class="rest_rate">
-										Рейтинг: &#9733 4,4 /5
-									</div>
-								</div>
-							</div>
-							<div class="slider__item">
-								<img src="/media/pic3.jpg" alt="">
-							</div>
-							<div class="slider__item">
-								<img src="/media/pic4.jpg" alt="">
-							</div>
-							<div class="slider__item">
-								<img src="/media/pic5.jpg" alt="">
-							</div>
-							<div class="slider__item">
-								<img src="/media/pic1.jpg" alt="">
-							</div>
-							<div class="slider__item">
-								<img src="/media/pic2.jpg" alt="">
-							</div>
-							<div class="slider__item">
-								<img src="/media/pic3.jpg" alt="">
-							</div>
-							<div class="slider__item">
-								<img src="/media/pic4.jpg" alt="">
-							</div>
-							<div class="slider__item">
-								<img src="/media/pic5.jpg" alt="">
-							</div>
-						</div>
-					</div>
-					<!-- подключаем jq -->
-					<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-					<!-- подключаем слайдер -->
-					<script src="{% static 'js/slick.min.js' %}"></script>
-					<!-- подключаем скрипты -->
-					<script src="{% static 'js/script.js' %}"></script>
-					<!---------------------------------------- Слайдер ---------------------------------------->
-					<!---------------------------------------- Слайдер ---------------------------------------->
 				</section>
 				<footer class="footer">
 					<div class="containerf">

@@ -3,13 +3,17 @@ body{
 	margin: 0;
 	font-family: 'Roboto', sans-serif;
 	color: 000;
-	background: url('/media/background2.jpg') no-repeat center top;
-	min-height: 100%;
+	overflow: hidden;
 }
 h1, h2, h3{
 	padding: 0;
 	margin: 0;
 	text-transform: uppercase;
+}
+.wrapper{
+	background: url('/media/background22.jpg') no-repeat center top;
+	min-height: 100%;
+	min-width: 100%;
 }
 .container{
 	margin: 0 auto;
@@ -18,21 +22,24 @@ h1, h2, h3{
 .header{
 	display: flex;
 	position: relative;
+	margin-bottom: 150px;
+}
+.block{
+	display: flex;
+    margin-top: 80px;
+    margin-left: 30px;
 }
 .name{
-	margin-left: 30px;
-	margin-top: 80px;
-	
-	font-size: 32px;
-	width: 219px;
-	height: 22px;
-	font-weight: bold;
+    margin-right: 100px;
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
 }
 .name a{
 	text-decoration: none;
 	color: white;
 } 
-.logo{
+.main_logo{
 	margin-top: 35px;
 }
 input{
@@ -41,9 +48,12 @@ input{
 	outline: none;
 	border: none;
 }
+.serch{
+	
+    margin-top: -10px;
+	
+}
 .serchbar{
-	margin-left: 100px;
-	margin-top: 70px;
 	width: 900px;
 	height: 50px;
 	border-radius: 50px;
@@ -81,7 +91,7 @@ input{
 
 .card_container{
 	overflow: auto;
-	height: 470px;
+	height: 480px;
 	margin-top: 100px;
 	width: 1000px;
 	margin-left: 430px;
@@ -143,15 +153,10 @@ input{
 }
 .card_container::-webkit-scrollbar{
 	width: 6px;
-	
-	
 }
 .card_container::-webkit-scrollbar-track{
 	background: #d1d0d0;
-
 	border-radius: 20px;
-
-
 }
 .card_container::-webkit-scrollbar-thumb{
 	background: rgba(0, 0, 0);
@@ -159,16 +164,303 @@ input{
 }
 .containerf{
 	display: flex;
-	margin-top: 170px;
-	margin-left: 210px;
+	margin-top: 120px;
+	margin-left: auto;
+	width: 1700px;
 }
 .download{
 	margin-right: 1290px;
+}
+.copyright{
+	margin-top: 20px;
+}
+/* -----------------Адаптив ------------------------*/
+@media screen and (max-width: 1200px) {
+	.container {
+		width: 1140px;
+	}
+
+}
+
+@media screen and (max-width: 1199px) {
+	.container {
+		width: 1060px;
+	}
+
+}
+
+@media screen and (max-width: 991px) {
+	.container {
+		width: 820px;
+		
+	}
+
+}
+
+@media screen and (max-width: 767px) {
+	.container {
+		width: 540px;
+	}
+
+}
+/* ---------------готово------------------- */
+@media screen and (max-height: 900px) {
+	/* -----X------- */
+	.container {
+		width: 100%;
+	}
+	.wrapper{
+		background: url('/media/mobilebg2.jpg') no-repeat center top;
+		min-width: 100%;
+		min-height: 100%;
+		position: fixed;
+	}
+	section{
+		padding: 0 15px 5px;
+	}
+	footer{
+		display: none;
+	}
+	.header{
+		margin-bottom: 0;
+	}
+	.block{
+		flex-direction: column;
+		margin-top: 40px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.logo {
+		height: 40px;
+	}
+	.main_logo{
+		margin-top: 25px;
+	}
+	.name{
+		margin-bottom: 20px;
+		font-size: 25px;
+		margin-right: 0;
+	}
+	input {
+		padding-left: 10px;
+		font-size: 12px;
+	}
+	.serchbar {
+		width: 200px;
+		height: 20px;
+		border-radius: 50px;
+		border: none;
+	}
+	.button{
+		background:url('/media/serchmob.png') no-repeat;
+		margin-left: -25px;
+		margin-bottom: -25px;
+	}
+	body{
+		overflow: hidden;
+	}
+	.card_container {
+		overflow: auto;
+		height: 600px;
+		margin-top: 50px;
+		width: 355px;
+		margin-left: auto;
+		margin-right: 5px;
+	}
+	.card_container::-webkit-scrollbar{
+		width: 3px;
+	}
 	
+	.card {
+		background-color: white;
+		border-radius: 20px;
+		width: 330px;
+		display: flex;
+		padding: 5px;
+		display: grid;
+		grid-template-columns: 2fr 4fr;
+		column-gap: 10px;
+		box-shadow: 8px 5px 5px rgb(0 0 0 / 20%);
+	}
+	.rest_logo {
+		margin-right: 0px;
+		display: flex;
+		align-items: flex-end;
+		justify-content: center;
+		align-items: center;
+		padding: 5px 5px;
+	}
+	.rest_pic {
+		height: 70px;
+		max-width: 100px;
+		border-radius: 10px;
+	}
+	.rest_name {
+		font-size: 14px;
+		font-weight: bold;
+		margin-left: 0px;
+		padding-top: 00px;
+		display: flex;
+		align-items: center;
+	}
+	.rest_adr {
+		margin-bottom: 0px;
+		font-size: 11px;
+		margin-bottom: 3px;
+	}
+	.rest_opis {
+		margin-bottom: 0px;
+		font-size: 11px;
+		
+	}
+	.dish {
+		font-weight: bold;
+		font-size: 11px;
+	}
+	.s1{
+		display: none;
+	}
+	.rest_rate{
+		font-size: 14px;
+		margin-top: 0;
+	}
+	.no_rate{
+		font-size: 12px;
+	}
+	.card:not(:last-child) {
+		margin-bottom: 10px;
+	}
+	.toggleable{
+		font-size: 12px;
+	}
 }
-.copyr{
 
-	margin-top: 30px;
+@media screen and (max-height: 800px) {
+	.container {
+		width: 100%;
+	}
+	.wrapper{
+		background: url('/media/mobilebg2.jpg') no-repeat center top;
+		min-width: 100%;
+		min-height: 100%;
+		position: fixed;
+	}
+	section{
+		padding: 0 15px;
+	}
+	footer{
+		display: none;
+	}
+	.header{
+		margin-bottom: 0;
+	}
+	.block{
+		flex-direction: column;
+		margin-top: 40px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.logo {
+		height: 40px;
+	}
+	.main_logo{
+		margin-top: 25px;
+	}
+	.name{
+		margin-bottom: 20px;
+		font-size: 25px;
+		margin-right: 0;
+	}
+	input {
+		padding-left: 10px;
+		font-size: 12px;
+	}
+	.serchbar {
+		width: 200px;
+		height: 20px;
+		border-radius: 50px;
+		border: none;
+	}
+	.button{
+		background:url('/media/serchmob.png') no-repeat;
+		margin-left: -25px;
+		margin-bottom: -25px;
+	}
+	body{
+		overflow: hidden;
+	}
+	.card_container {
+		overflow: auto;
+		height: 500px;
+		margin-top: 50px;
+		width: 355px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.card_container::-webkit-scrollbar{
+		width: 3px;
+	}
+	
+	.card {
+		background-color: white;
+		border-radius: 20px;
+		width: 330px;
+		display: flex;
+		padding: 5px;
+		display: grid;
+		grid-template-columns: 2fr 4fr;
+		column-gap: 10px;
+		box-shadow: 8px 5px 5px rgb(0 0 0 / 20%);
+	}
+	.rest_logo {
+		margin-right: 0px;
+		display: flex;
+		align-items: flex-end;
+		justify-content: center;
+		align-items: center;
+		padding: 5px 5px;
+	}
+	.rest_pic {
+		height: 70px;
+		max-width: 100px;
+		border-radius: 10px;
+	}
+	.rest_name {
+		font-size: 14px;
+		font-weight: bold;
+		margin-left: 0px;
+		padding-top: 00px;
+		display: flex;
+		align-items: center;
+	}
+	.rest_adr {
+		margin-bottom: 0px;
+		font-size: 11px;
+		margin-bottom: 3px;
+	}
+	.rest_opis {
+		margin-bottom: 0px;
+		font-size: 11px;
+		
+	}
+	.dish {
+		font-weight: bold;
+		font-size: 11px;
+	}
+	.s1{
+		display: none;
+	}
+	.rest_rate{
+		font-size: 14px;
+		margin-top: 0;
+	}
+	.no_rate{
+		font-size: 12px;
+	}
+	.card:not(:last-child) {
+		margin-bottom: 10px;
+	}
+	.toggleable{
+		font-size: 12px;
+	}
 }
-
-

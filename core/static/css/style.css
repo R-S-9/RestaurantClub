@@ -12,6 +12,8 @@ h1, h2, h3{
 }
 .wrapper{
 	background: url('/media/group2.png') no-repeat center top;
+	min-height: 100%;
+	min-width: 100%;
 }
 .container{
 	margin: 0 auto;
@@ -82,20 +84,178 @@ P{
 	line-height: 30px;
 	
 }
+.containerf{
+	display: flex;
+	margin-top: 0px;
+	margin-left: auto;
+	width: 1700px;
+}
 .download{
-	margin-top: 320px;
-	margin-left:100px;
+	margin-right: 1290px;
 }
-.copyr{
-	color: black;
-	margin-left: 1500px;
-	margin-top: -20px;
+.copyright{
+	margin-top: 30px;
 }
+
 .error{
 	position: absolute;
 	top: 120px;
 	left: 335px;
 }
+
+
+/* ---------------------Слайдер -----------------------------*/
+.slider_cont{
+	margin: 0 auto;
+	width: 850px;
+	margin-top: 180px;
+}
+.slick-slider{}
+/* Слайдер запущен */
+.slick-slider.slick-initialized{}
+/* Слайдер с точками */
+.slick-slider.slick-dotted{}
+/* Ограничивающая оболочка */
+.slick-list {
+	overflow: hidden;
+	width: 850px;
+	height: 140px;
+}
+/* Лента слайдов */
+.slick-track{
+	display: flex;
+	
+	
+}
+/* Слайд */
+.slick-slide{
+	margin-right: 50px;
+	
+}
+/* Слайд активный (показывается) */
+.slick-slide.slick-active{}
+/* Слайд основной */
+.slick-slide.slick-current{}
+/* Слайд по центру */
+.slick-slide.slick-center{}
+/* Клонированный слайд */
+.slick-slide.slick-cloned{}
+/* Стрелка */
+.slick-arrow{
+	outline: none;
+	border: none;
+}
+
+/* Стрелка влево */
+.slick-arrow.slick-prev{}
+/* Стрелка вправо */
+.slick-arrow.slick-next{}
+/* Стрелка не активная */
+.slick-arrow.slick-disabled{}
+/* Точки (булиты) */
+.slick-dots{}
+.slick-dots li{}
+/* Активная точка */
+.slick-dots li.slick-active{}
+/* Элемент точки */
+.slick-dots li button{}
+
+/* конкретный слайдер */
+.slider{
+	position: relative;
+	padding: 0 60px;
+}
+.slider .slick-arrow{
+	position: absolute;
+	top: 50%;
+	z-index: 10;
+	font-size: 0;
+	width: 30px;
+	height: 60px;
+}
+.slider .slick-arrow.slick-prev{
+	left: 0;
+	background:url('/media/left_icon-icons.com_61213.svg') 0 0 / 100% no-repeat;
+}
+/* Стрелка вправо */
+.slider .slick-arrow.slick-next{
+	left: 105%;
+	background:url('/media/right_icon-icons.com_61212.svg') 0 0 / 100% no-repeat;
+}
+.slider .slick-dots{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-left: 40px;
+    margin-top: 0px;
+}
+.slider .slick-dots li{
+	list-style: none;
+	margin: 0px 3px;
+}
+.slider .slick-dots button{
+	font-size: 0;
+	width: 15px;
+	height: 5px;
+	background-color: #fff;
+	border: 1px solid #000;
+	border-radius: 30%;
+}
+.slider .slick-dots li.slick-active button{
+	background-color: #000;
+}
+
+
+
+.slider__item img{
+	height: 100px;
+	width: 130px;
+	border-radius: 10px;
+}
+.slider__item{
+	background-color: white;
+	box-shadow: 10px 6px 10px  rgba(0, 0, 0, .4);
+	border-radius: 30px;
+	padding: 10px 20px;
+	display: flex;
+}
+.card_cont{
+	display: flex;
+	flex-direction: column;
+	margin-left: 20px;
+}
+.slider__item .slick-slide .slick-active{
+
+}
+
+.slider__item{
+	
+}
+.rest_name{
+	margin-top: 5px;
+	font-size: 20px;
+	margin-bottom: 10px;
+}
+.rest_name a{
+	text-decoration: none;
+	color: black;
+	font-weight: bold;
+}
+.rest_kitchen{
+	margin-bottom: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 /* --------------------АДАПТИВ-------------------- */
 @media screen and (max-width: 1200px) {
 	.container {
@@ -123,6 +283,9 @@ P{
 	.container {
 		width: 540px;
 	}
+
+}
+@media screen and (max-height: 575px){
 
 }
 
@@ -173,22 +336,84 @@ P{
 		background:url('/media/serchmob.png') no-repeat;
 		margin-left: -25px;
 		margin-bottom: -25px;
-		}
-		p{
-			margin-left: 0;
-		}
-		.p1 {
-			font-size: 20px;
-			font-weight: bold;
-			width: 200px;
-			line-height: 20px;
-		}
-		.p2 {
-			width: 180px;
-			font-size: 14px;
-			line-height: normal;
-		}
-
+	}
+	p{
+		margin-left: 0;
+	}
+	.p1 {
+		font-size: 20px;
+		font-weight: bold;
+		width: 200px;
+		line-height: 20px;
+	}
+	.p2 {
+		width: 180px;
+		font-size: 14px;
+		line-height: normal;
+	}
+	/* -------------Слайдер -----------------------*/
+	.slider__item img{
+		height: 60px;
+    	width: 80px;
+		border-radius: 10px;
+	}
+	.rest_name{
+		margin-top: 0px;
+		font-size: 16px;
+		margin-bottom: 0px;
+	}
+	.rest_name a{
+		text-decoration: none;
+		color: black;
+		font-weight: bold;
+	}
+	.rest_kitchen{
+		margin-bottom: 3px;
+		font-size: 12px;
+	}
+	.rest_rate{
+		font-size: 14px;
+	}
+	.card_cont{
+		display: flex;
+		flex-direction: column;
+		margin-left: 10px;
+	}
+	.slider__item{
+		padding: 5px 10px;
+		border-radius: 20px;
+		box-shadow: 5px 3px 5px  rgba(0, 0, 0, .4);
+	}
+	.slider_cont{
+		width: 300px;
+		margin-top: 180px;
+	
+	}
+	.slick-list {
+		overflow: hidden;
+		width: 300px;
+		height: 80px;
+	}
+	.slider{
+		position: relative;
+		padding: 0 0px;
+	}
+	.slider .slick-dots{
+		display: flex;
+		margin-left: -80px;
+		margin-top: 0px;
+	}
+	.slider .slick-dots button{
+		font-size: 0;
+		width: 8px;
+		height: 4px;
+		background-color: #fff;
+		border: 1px solid #000;
+		border-radius: 30%;
+	}
+	.slider .slick-dots li{
+		list-style: none;
+		margin: 0px 2px;
 	}
 	
 }
