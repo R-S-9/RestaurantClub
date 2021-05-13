@@ -4,16 +4,30 @@ body{
 	font-family: 'Roboto', sans-serif;
 	color: 000;
 	z-index: 1;
+	overflow: hidden;
+	height: 100%;
+}
+html{
+	height: 100%;
 }
 h1, h2, h3{
 	padding: 0;
 	margin: 0;
 	text-transform: uppercase;
 }
+
 .wrapper{
-	background: url('/media/group2.png') no-repeat center top;
-	min-height: 100%;
+	background: url('/media/group222.png') no-repeat center top;
+	height: 100%;
 	min-width: 100%;
+	display: flex;
+	flex-direction: column;
+}
+.content{
+	flex: 1 0 auto;
+}
+.footer{
+	flex: 0 0 auto;
 }
 .container{
 	margin: 0 auto;
@@ -86,21 +100,26 @@ P{
 }
 .containerf{
 	display: flex;
-	margin-top: 0px;
+	margin-top: -60px;
 	margin-left: auto;
 	width: 1700px;
+	
 }
 .download{
 	margin-right: 1290px;
 }
 .copyright{
 	margin-top: 30px;
+	
 }
 
 .error{
 	position: absolute;
 	top: 120px;
 	left: 335px;
+}
+footer{
+	flex-grow: 1;
 }
 
 
@@ -119,11 +138,12 @@ P{
 .slick-list {
 	overflow: hidden;
 	width: 850px;
-	height: 140px;
+	height: 160px;
 }
 /* Лента слайдов */
 .slick-track{
 	display: flex;
+	align-items: flex-end;
 	
 	
 }
@@ -214,7 +234,7 @@ P{
 }
 .slider__item{
 	background-color: white;
-	box-shadow: 10px 6px 10px  rgba(0, 0, 0, .4);
+	box-shadow: 10px 6px 10px  rgba(0, 0, 0, .6);
 	border-radius: 30px;
 	padding: 10px 20px;
 	display: flex;
@@ -231,18 +251,27 @@ P{
 .slider__item{
 	
 }
+.card_content{
+	margin: 0px 20px;
+	display: flex;
+	flex-direction: column;
+
+}
 .rest_name{
-	margin-top: 5px;
 	font-size: 20px;
 	margin-bottom: 10px;
+	font-weight: bold;
+
 }
-.rest_name a{
+.slider__item a {
 	text-decoration: none;
 	color: black;
 	font-weight: bold;
 }
+
 .rest_kitchen{
 	margin-bottom: 10px;
+	font-weight: normal;
 }
 
 
@@ -285,19 +314,19 @@ P{
 	}
 
 }
-@media screen and (max-height: 575px){
 
-}
-
-@media screen and (max-width: 575px) {
+@media screen and (max-width: 800px) {
 	.container {
 		width: 100%;
+	}
+	html{
+		height: 100%;
 	}
 	section{
 		margin-left: 15px;
 	}
 	.wrapper{
-		background: url('/media/mobilebg2.png') no-repeat center top;
+		background: url('/media/mobilebg333.png') no-repeat center top;
 		min-width: 100%;
 		min-height: 100%;
 		position: fixed;
@@ -308,8 +337,7 @@ P{
 	.block{
 		flex-direction: column;
 		margin-top: 40px;
-		margin-left: auto;
-		margin-right: auto;
+		margin-left: 50px;
 	}
 	.logo {
 		height: 40px;
@@ -336,6 +364,15 @@ P{
 		background:url('/media/serchmob.png') no-repeat;
 		margin-left: -25px;
 		margin-bottom: -25px;
+		display: none;
+	}
+	.error{
+		top: 100px;
+    	left: 70px;
+    	font-size: 14px;
+	}
+	.header{
+		margin-bottom: 100px;
 	}
 	p{
 		margin-left: 0;
@@ -386,17 +423,166 @@ P{
 	}
 	.slider_cont{
 		width: 300px;
-		margin-top: 180px;
+		margin-top: 0;
+		margin-left: 0;
 	
+	}
+	.slick-track{
+		display: flex;
+		align-items: flex-start;
+	}
+	.slick-list {
+		overflow: hidden;
+		width: 350px;
+		
+	}
+	.slider__form{
+		position: absolute;
+		bottom: 7%;
+		right: 7%;
+	}
+	.slider{
+		position: static;
+		padding: 0;
+		
+	}
+	.slider .slick-dots{
+		display: flex;
+		margin-left: -30px;
+		margin-top: 0px;
+	}
+	.slider .slick-dots button{
+		font-size: 0;
+		width: 8px;
+		height: 4px;
+		background-color: #fff;
+		border: 1px solid #000;
+		border-radius: 30%;
+	}
+	.slider .slick-dots li{
+		list-style: none;
+		margin: 0px 2px;
+	}
+	
+}
+/* @media screen and (max-height: 800px) {
+	.container {
+		width: 100%;
+	}
+	section{
+		margin-left: 15px;
+	}
+	.wrapper{
+		background: url('/media/mobilebg322.png') no-repeat center top;
+		min-width: 100%;
+		min-height: 100%;
+		position: fixed;
+	}
+	footer{
+		display: none;
+	}
+	.block{
+		flex-direction: column;
+		margin-top: 40px;
+		margin-left: 50px;
+	}
+	.logo {
+		height: 40px;
+	}
+	.main_logo{
+		margin-top: 25px;
+	}
+	.name{
+		margin-bottom: 20px;
+		font-size: 25px;
+		margin-right: 0;
+	}
+	input {
+		padding-left: 10px;
+		font-size: 12px;
+	}
+	.serchbar {
+		width: 200px;
+		height: 20px;
+		border-radius: 50px;
+		border: none;
+	}
+	.button{
+		background:url('/media/serchmob.png') no-repeat;
+		margin-left: -25px;
+		margin-bottom: -25px;
+		display: none;
+	}
+	.error{
+		top: 100px;
+    	left: 70px;
+    	font-size: 14px;
+	}
+	p{
+		margin-left: 0;
+	}
+	.p1 {
+		font-size: 20px;
+		font-weight: bold;
+		width: 200px;
+		line-height: 20px;
+	}
+	.p2 {
+		width: 180px;
+		font-size: 14px;
+		line-height: normal;
+	}
+	/* -------------Слайдер -----------------------*/
+	/* .slider__item img{
+		height: 60px;
+    	width: 80px;
+		border-radius: 10px;
+	}
+	.rest_name{
+		margin-top: 0px;
+		font-size: 16px;
+		margin-bottom: 0px;
+	}
+	.rest_name a{
+		text-decoration: none;
+		color: black;
+		font-weight: bold;
+	}
+	.rest_kitchen{
+		margin-bottom: 3px;
+		font-size: 12px;
+	}
+	.rest_rate{
+		font-size: 14px;
+	}
+	.card_cont{
+		display: flex;
+		flex-direction: column;
+		margin-left: 10px;
+	}
+	.slider__item{
+		padding: 5px 10px;
+		border-radius: 20px;
+		box-shadow: 5px 3px 5px  rgba(0, 0, 0, .4);
+	}
+	.slider_cont{
+		width: 300px;
+		margin-top: 0;
+		margin-left: 0;
+	}	
+	.slider__form{
+		position: absolute;
+		bottom: 2%;
+		right: -10%;
 	}
 	.slick-list {
 		overflow: hidden;
 		width: 300px;
-		height: 80px;
+		height: 90px;
 	}
 	.slider{
-		position: relative;
-		padding: 0 0px;
+		position: static;
+		padding:0;
 	}
 	.slider .slick-dots{
 		display: flex;
@@ -416,6 +602,6 @@ P{
 		margin: 0px 2px;
 	}
 	
-}
+} */ 
 
 

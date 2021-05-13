@@ -22,7 +22,7 @@
 						<div class="header">
 							<div class="main_logo">
 								<a href="{% url 'main_map_restaurants' %}">
-									<img src="/media/logo.jpg" class="logo">
+									<img src="/media/logo2.jpg" class="logo">
 								</a>
 							</div>
 							<div class="block">
@@ -35,12 +35,14 @@
 										<input type="submit" class="button" value="">
 									</form>
 								</div>
+							
 							</div>
 							<div class="error">
 								{% if errors %}
 								<p class="errmes">{{ errors }}</p>
 								{% endif %}
 							</div>
+						
 						</div>
 						<div class="main">
 							<div class="offer">
@@ -49,42 +51,6 @@
 							</div>
 						</div>
 						
-						<!--<div class="predlog">
-							Наши предложения:
-							<form method="POST">
-								{% for restaurant in data %}
-								<p><a href="{% url 'restaurant' rest_name=restaurant.restaurant_name %}">{{ restaurant.restaurant_name }}</a></p>
-							</form>
-							<div class="logo_pred" >
-							{% if restaurant.image.exists %}
-								{% for imgs in restaurant.image %}
-								<img src="/media/{{ imgs.image_restaurant }}" alt="">
-							</div>
-							<div class="opis_pred">
-								{% if restaurant.description_restaurant %}
-								Описание: {{ restaurant.description_restaurant }}
-								{% endif %}
-							</div>
-							<div class="chek_pred">
-								{% if restaurant.average_check_restaurant %}
-								Средний чек: {{ restaurant.average_check_restaurant }} рублей.
-								{% endif %}
-							</div>
-							<div class="adres_pred">
-								{% if restaurant.location %}
-								Адрес: {{ restaurant.location }}
-								{% endif %}
-							</div>
-							{% endfor %}
-							{% endif %}
-							<div class="rating_pred">
-								{% if restaurant.reviews.exists %}
-								Общий рейтинг рессторана: {{ restaurant.rating }}
-								{% endif %}
-							</div>
-							----------------------------------------------------------------------------
-							{% endfor %}
-						</div>-->
 						<!-- =========================НОВЫЙ=========================== -->
 						<!-- Наши предложения:
 						<br>
@@ -121,67 +87,49 @@
 					</div>
 					<!---------------------------------------- Слайдер ---------------------------------------->
 					<!---------------------------------------- Слайдер ---------------------------------------->
+					<form method="POST" class="slider__form">
 					<div class="slider_cont">
 						<div class="slider">
-							<div class="slider__item">
-								<div class="rest_logo">
-									 <img src="/media/logo_la_maison_6GFZvKY.png" alt="">
-								</div>
-								<div class="card_cont">
-									
-									<div class="rest_name">
-										<a href="">La Maison</a>
+								{% for restaurant in data %}
+									<div class="slider__item">
+										
+										{% if restaurant.image.exists %}
+											{% for imgs in restaurant.image %}
+												<a href="{% url 'restaurant' rest_name=restaurant.restaurant_name %}">
+													<div class="rest_logo">
+														<img src="/media/{{ imgs.image_restaurant }}" alt="">
+													</div>
+												</a>
+											{% endfor %}
+										{% else %}
+										
+										{% endif %}
+											<a href="{% url 'restaurant' rest_name=restaurant.restaurant_name %}">
+												<div class="card_content">
+														<div class="rest_name">
+															{{ restaurant.restaurant_name.title }}
+															
+														</div>
+													{% if restaurant.description_restaurant %}
+														<div class="rest_kitchen">
+															<span class="p3"> <b>Кухня </b>{{ restaurant.description_restaurant.capitalize }}</span>
+														</div>
+													{% endif %}
+													{% if restaurant.reviews.exists %}
+														<div class="rest_rate">
+															 &#9733 {{ restaurant.rating }}/5
+														</div>
+													{% else %}
+														<div class="rest_rate">
+															Отзывов нет.
+														</div>
+													{% endif %}
+												</div>
+											</a>
 									</div>
-									<div class="rest_kitchen">
-										<span class="p3">Итальянская кухня</span>
-									</div>
-									<div class="rest_rate">
-										Рейтинг: &#9733 4,6 /5
-									</div>
-								</div>
-							</div>
-							<div class="slider__item">
-								<div class="rest_logo">
-									 <img src="/media/goodman_qdFVN5B_0CN37as.png" alt="">
-								</div>
-								<div class="card_cont">
-									<div class="rest_name">
-										<a href="">Goodman</a>
-									</div>
-									<div class="rest_kitchen">
-										<span class="p3">Стейк-хаус</span>
-									</div>
-									<div class="rest_rate">
-										Рейтинг: &#9733 4,4 /5
-									</div>
-								</div>
-							</div>
-							<div class="slider__item">
-								<img src="/media/pic3.jpg" alt="">
-							</div>
-							<div class="slider__item">
-								<img src="/media/pic4.jpg" alt="">
-							</div>
-							<div class="slider__item">
-								<img src="/media/pic5.jpg" alt="">
-							</div>
-							<div class="slider__item">
-								<img src="/media/pic1.jpg" alt="">
-							</div>
-							<div class="slider__item">
-								<img src="/media/pic2.jpg" alt="">
-							</div>
-							<div class="slider__item">
-								<img src="/media/pic3.jpg" alt="">
-							</div>
-							<div class="slider__item">
-								<img src="/media/pic4.jpg" alt="">
-							</div>
-							<div class="slider__item">
-								<img src="/media/pic5.jpg" alt="">
-							</div>
+								{% endfor %}
 						</div>
-					</div>
+					</form>
 					<!-- подключаем jq -->
 					<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 					<!-- подключаем слайдер -->

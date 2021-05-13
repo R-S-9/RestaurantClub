@@ -1,41 +1,81 @@
 import json
+from operator import itemgetter
 
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect,\
     HttpResponse
 from django.db.models import Avg, Q
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from django.core.mail import send_mail
 
 
 from .models import Reviews, Restaurant
-from .forms import AddReviews
+from .forms import AddReviews, Feedback
+from django.conf import settings
 
 
-def main_map_restaurants(request):
+def main_map_restaurants(request, errors=None):
+
+    if request.method == 'POST':
+        if 'application_to_add' in request.POST:
+            print('YES')
+            return restaurant_offer(request)
+
+    return loading_data_for_main_site(request, errors)
+
+
+def restaurant_offer(request):
+    # TODO фун-ия для отправки по емаилу запроса на добавление ресторана
+
+    # form = Feedback(request.POST)
+    # # form = Feedback()
+    #
+    # if form.is_valid():
+    #     subject = form.cleaned_data['subject']
+    #     from_email = form.cleaned_data['from_email']
+    #     message = form.cleaned_data['message']
+
+    # Отправка работает:
+    # send_mail(
+    #     'Тестируем',
+    #     'Текст',
+    #     settings.EMAIL_HOST_USER,
+    #     [
+    #         'rafik.saakyan.1989@mail.ru'
+    #     ]
+    # )
+    pass
+
+# restaurant_offer()
+
+
+def loading_data_for_main_site(request, errors):
+    if not errors:
+        errors = False
 
     restaurants = Restaurant.objects.annotate(
         avg_stars=Avg('reviews__stars')
-    ).order_by('-avg_stars').distinct()[:5]
+    ).order_by('-avg_stars').distinct()[:10]
     data = []
 
     for r in restaurants:
         rate = r.reviews.aggregate(Avg('stars'))['stars__avg']
         if rate is None:
-            rating = True
+            rating = 0
         else:
             rating = float('{:.1f}'.format(rate))
 
         data.append({
             'restaurant_name': r.restaurant_name,
-            'reviews': r.reviews.values('review', 'stars'),
             'description_restaurant': r.description_restaurant,
-            'average_check_restaurant': r.average_check_restaurant,
-            'location': r.location,
             'rating': rating,
             'image': r.images.values('image_restaurant'),
+            'reviews': r.reviews.values('review', 'stars'),
         })
 
-    return render(request, 'base.html', {'data': data})
+    data.sort(key=itemgetter('rating'), reverse=True)
+
+    return render(request, 'base.html', {'data': data, 'errors': errors})
 
 
 @csrf_exempt
@@ -59,7 +99,7 @@ def search_results_view(request):
 
         if not restaurants.exists() or search_word == '':
             errors = 'Введенного вами блюда, не найдено.'
-            return render(request, 'base.html', {'errors': errors})
+            return main_map_restaurants(request, errors)
 
         data = []
 
@@ -67,7 +107,7 @@ def search_results_view(request):
             rate = r.reviews.aggregate(Avg('stars'))['stars__avg']
 
             if rate is None:
-                rating = True
+                rating = 0
             else:
                 rating = float('{:.1f}'.format(rate))
 
@@ -76,18 +116,17 @@ def search_results_view(request):
             ).values('name', 'check')
 
             data.append({
-                    'restaurant_name': r.restaurant_name,
-                    'reviews': r.reviews.values('review', 'stars'),
-                    'dish': [
-                        {'name': i['name'], 'check': i['check']} for i in dish
-                    ],
-                    'description_restaurant': r.description_restaurant,
-                    'about_restaurant': r.about_restaurant,
-                    'average_check_restaurant': r.average_check_restaurant,
-                    'location': r.location,
-                    'rating': rating,
-                    'image': r.images.values('image_restaurant'),
-                })
+                'restaurant_name': r.restaurant_name,
+                'dish': [
+                    {'name': i['name'], 'check': i['check']} for i in dish
+                ],
+                'description_restaurant': r.description_restaurant,
+                'location': r.location,
+                'rating': rating,
+                'image': r.images.values('image_restaurant'),
+            })
+
+        data.sort(key=itemgetter('rating'), reverse=True)
 
         return render(
             request,
@@ -166,8 +205,8 @@ def restaurants_map(request, rest_name):
             return HttpResponseRedirect("accepted_review")
         else:
             errors = 'Введенные вами данные не корректны:\n' \
-                     'Имя должно состоять от 3 до 25 символов.\n' \
-                     'Отзыв не должен превышать 255 символов.\n' \
+                     'Имя должно состоять от 2 до 25 символов.\n' \
+                     'Отзыв не должен превышать 250 символов.\n' \
                      'Ресторан оценивается по 5 бальной шкале.\n'
 
             form = AddReviews()
@@ -189,7 +228,7 @@ def accepted_review(request, rest_name):
 def main_map_restaurants_api(request):
     restaurants = Restaurant.objects.annotate(
         avg_stars=Avg('reviews__stars')
-    ).order_by('-avg_stars').distinct()[:5]
+    ).order_by('-avg_stars').distinct()[:12]
 
     if not restaurants:
         return HttpResponse(status=400)
@@ -199,7 +238,7 @@ def main_map_restaurants_api(request):
     for r in restaurants:
         rate = r.reviews.aggregate(Avg('stars'))['stars__avg']
         if rate is None:
-            rating = -1
+            rating = 0
         else:
             rating = float('{:.1f}'.format(rate))
 
@@ -215,6 +254,9 @@ def main_map_restaurants_api(request):
                 flat=True
             ))
         })
+
+    data.sort(key=itemgetter('rating'), reverse=True)
+
     return JsonResponse(dict(data=data))
 
 
@@ -243,7 +285,7 @@ def search_results_view_api(request):
     for r in restaurants:
         rate = r.reviews.aggregate(Avg('stars'))['stars__avg']
         if rate is None:
-            rating = -1
+            rating = 0
         else:
             rating = float('{:.1f}'.format(rate))
 
@@ -263,6 +305,8 @@ def search_results_view_api(request):
                 ))
             }
         )
+
+    data.sort(key=itemgetter('rating'), reverse=True)
 
     return JsonResponse(dict(data=data))
 

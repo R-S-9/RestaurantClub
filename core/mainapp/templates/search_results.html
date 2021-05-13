@@ -22,7 +22,7 @@
 				<div class="header">
 					<div class="main_logo">
 						<a href="{% url 'main_map_restaurants' %}">
-							<img src="/media/logo.jpg" class="logo">
+							<img src="/media/logo3.jpg" class="logo">
 						</a>
 					</div>
 					<div class="block">
@@ -91,22 +91,16 @@
 														<label for="toggleable{{ forloop.counter }}" class="toggleable__label">Показать все</label> <br>
 													{% endif %}
 											
-												
+												<div>
 												{{ restaurant.dish.0.name.capitalize }}
-												{{ restaurant.dish.0.check }}&#8381
+												{{ restaurant.dish.0.check }}&#8381</div>
 												{% if restaurant.dish|length > 1 %}
 													<div class="dish-add toggleable__content">
 														{% for dish in restaurant.dish|slice:"1:" %}
 														{{ dish.name.capitalize }}
 														{{ dish.check }}&#8381<br>
 														{% endfor %}
-													</div>
-													<script type="text/javascript">
-														var block = document.getElementById("block");
-														block.scrollTop = block.scrollHeight;
-														//document.body.scrollTop = document.body.scrollHeight;
-														
-													</script>
+													</div>												
 												{% endif %}
 											</div>
 										{% endif %}

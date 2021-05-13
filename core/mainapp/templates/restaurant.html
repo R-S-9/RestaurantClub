@@ -7,6 +7,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
 	<title>{% block title %}Ресторан {{ restaurant_name }}{% endblock %}</title>
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -23,14 +24,25 @@
 				<div class="header">
 					<div class="main_logo">
 						<a href="{% url 'main_map_restaurants' %}">
-							<img src="/media/logo.jpg" class="logo">
+							<img src="/media/logo3.jpg" class="logo">
 						</a>
 					</div>
-					<div class="name"><a href="{% url 'main_map_restaurants' %}">RestaurantClub</a></div>
-					<form action="{% url 'search_results_view' %}" method="POST">
-						<input name="search" placeholder="Введите название блюда..." type="text" autocomplete="off" class="serchbar">
-						<input type="submit" class="button" value="">
-					</form>
+					<div class="block">
+						<div class="name">
+							<a href="{% url 'main_map_restaurants' %}">RestaurantClub</a>
+						</div>
+						<div class="serch">
+							<form action="{% url 'search_results_view' %}" method="POST">
+								<input name="search" placeholder="Введите название блюда..." type="text" autocomplete="off" class="serchbar">
+								<input type="submit" class="button" value="">
+							</form>
+						</div>
+					</div>
+					<div class="error">
+						{% if errors %}
+						<p class="errmes">{{ errors }}</p>
+						{% endif %}
+					</div>
 				</div>
 				<div class="rest_info">
 					{% for restaurant in data %}

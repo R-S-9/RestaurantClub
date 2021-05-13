@@ -4,6 +4,7 @@ body{
 	font-family: 'Roboto', sans-serif;
 	color: 000;
 	min-height: 100%;
+	overflow: hidden;
 }
 
 h1, h2, h3{
@@ -12,7 +13,7 @@ h1, h2, h3{
 	text-transform: uppercase;
 }
 .wrapper{
-	background: url('/media/background22.jpg') no-repeat center top;
+	background: url('/media/background2new.jpg') no-repeat center top;
 	min-height: 100%;
 	min-width: 100%;
 }
@@ -25,44 +26,43 @@ h1, h2, h3{
 .header{
 	display: flex;
 	position: relative;
-	margin-bottom: 100px;
+	margin-bottom: 150px;
 }
-
+.block{
+	display: flex;
+    margin-top: 80px;
+    margin-left: 30px;
+}
 .name{
-	margin-left: 30px;
-	margin-top: 80px;
-	color: white;
-	font-size: 32px;
-	width: 219px;
-	height: 22px;
-	font-weight: bold;
+    margin-right: 100px;
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
 }
-
 .name a{
 	text-decoration: none;
 	color: white;
-}
-
-.logo{
+} 
+.main_logo{
 	margin-top: 35px;
 }
-
 input{
 	padding-left: 20px;
 	font-size: 20px;
 	outline: none;
 	border: none;
 }
-
+.serch{
+	
+    margin-top: -10px;
+	
+}
 .serchbar{
-	margin-left: 100px;
-	margin-top: 70px;
 	width: 900px;
 	height: 50px;
 	border-radius: 50px;
 	border: none;
 }
-
 .button{
 	background:url('/media/serch.png') no-repeat;
 	width: 36px;
@@ -134,12 +134,18 @@ input{
 
 .containerf{
 	display: flex;
-	margin-top: 180px;
+	margin-top: 130px;
 	margin-left: auto;
 	width: 1700px;
+	background-color: #fff;
+	width: 100%;
+	
+	
 }
+
 .download{
 	margin-right: 1290px;
+	margin-left: 220px;
 }
 .copyright{
 	margin-top: 20px;
@@ -149,7 +155,6 @@ input{
 	background-color: white;
     border-radius: 30px;
     padding: 40px 100px 50px 50px;
-	/* overflow: auto; */
 	width: 60%;
 	height: 380px;
 }
@@ -213,7 +218,7 @@ input{
 	width: 250px;
 	height: 30px;
 	box-shadow: 8px 8px 10px 1px rgba(0, 0, 0, 0.2);
-	border-radius: 30px;
+	border-radius: 15px;
 }
 
 .form-control-review{
@@ -259,3 +264,151 @@ input{
 	background: rgba(0, 0, 0);
 	border-radius: 20px;
 }
+/* ------------------------АДАПТИВ ------------------------------*/
+ @media screen and (max-width: 800px) {
+	.container {
+		width: 100%;
+
+	}
+	section{
+		padding: 0 20px 20px;
+	}
+	body{
+		overflow: auto;
+		height: 100%;
+	}
+	html{
+		height: 100%;
+	}
+	.wrapper{
+		background: url('/media/mobilebgpage23.jpg') center top;
+		min-width: 100%;
+	}
+	footer{
+		display: none;
+	 }
+	.header{
+		margin-bottom: 20px;
+		flex: 1 0 auto;
+		margin-left: auto;
+    	margin-right: auto;
+	}
+	.block{
+		flex-direction: column;
+		margin-top: 40px;
+		margin-left: 0;
+	}
+	.logo {
+		height: 40px;
+	}
+	.main_logo{
+		margin-top: 25px;
+		margin-right: 20px;
+	}
+	.name{
+		margin-bottom: 20px;
+		font-size: 25px;
+		margin-right: 0;
+	}
+	input {
+		padding-left: 10px;
+		font-size: 12px;
+	}
+	.serchbar {
+		width: 200px;
+		height: 20px;
+		border-radius: 50px;
+		border: none;
+	}
+	.button{
+		background:url('/media/serchmob.png') no-repeat;
+		margin-left: -25px;
+		margin-bottom: -25px;
+		display: none;
+	}
+	.error{
+		top: 100px;
+    	left: 70px;
+    	font-size: 14px;
+	}
+
+	.rest_info{
+		display: block;
+	}
+	.rest_nalore {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		margin-left: auto;
+		margin-right: auto;
+		width: 70%;
+	}
+	.background1 {
+		height: 30px;
+		width: 250px;
+		background-color: white;
+		border-radius: 10px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-bottom: 10px;
+	}
+	.background2 {
+		width: 250px;
+		background-color: white;
+		border-radius: 20px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 160px;
+		margin-bottom: 10px;
+	}
+	.background3 {
+		height: 30px;
+		width: 250px;
+		background-color: white;
+		border-radius: 10px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.rest_name {
+		font-size: 18px;
+		font-weight: bold;
+	}
+	.rest_pic {
+		height: 120px;
+		max-width: 150px;
+	}
+	.rest_rate {
+		font-size: 14px;
+		font-weight: bold;
+	}
+	.big_info {
+		background-color: white;
+		border-radius: 20px;
+		padding: 20px 50px 20px 30px;
+		width: 70%;
+		height: auto;
+		font-size: 12px;
+		margin-top: 20px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.info_container {
+		overflow: hidden;
+		height: auto;
+		width: 105%;
+	}
+	.review {
+		margin-bottom: 20px;
+		max-width: 250px;
+	}
+	.form-control{
+		width: 200px;
+	}
+	.form-control-review{
+		width: 200px;
+	}
+} 

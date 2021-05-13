@@ -1,12 +1,14 @@
 from pathlib import Path
 import os
 
+from .config import KEY, NAME, USER, PASSWORD, HOST, PORT, password,\
+    from_email as email
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'b-r4+!u$*4#n#sep9h))7l*j7r#$-r_=oghh$a7rt&lvro*lw0'
+SECRET_KEY = KEY
 
-DEBUG = True
+DEBUG = True  # FIXME Поменять на False
 
 ALLOWED_HOSTS = ['*']
 
@@ -52,11 +54,11 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'RestaurantClub',
-        'USER': 'postgres',
-        'PASSWORD': 'Origin123',
-        'HOST': '127.0.0.1',
-        'PORT': '5432'
+        'NAME': NAME,
+        'USER': USER,
+        'PASSWORD': PASSWORD,
+        'HOST': HOST,
+        'PORT': PORT
     }
 }
 
@@ -99,3 +101,16 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_PORT = 2525
+
+EMAIL_HOST_USER = email
+EMAIL_HOST_PASSWORD = password
+
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
+SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
