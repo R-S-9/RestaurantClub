@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = KEY
 
-DEBUG = True  # FIXME Поменять на False
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 

@@ -210,6 +210,8 @@ input{
 .review{
 	margin-bottom: 20px;
 	max-width: 800px;
+	overflow: hidden;
+	text-overflow: ellipsis;
 	
 }
 

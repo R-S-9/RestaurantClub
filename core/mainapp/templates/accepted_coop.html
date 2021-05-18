@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+
+{% load static %}
+{% csrf_token %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+		document.location.replace("{% url 'main_map_restaurants' %}")
+	</script>
+</head>
+{% block content %}
+<body>
+</body>
+{% endblock %}
+</html>

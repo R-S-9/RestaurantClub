@@ -1,11 +1,11 @@
 from django import forms
 
-from .models import Reviews
+from .models import Review
 
 
 class AddReviews(forms.ModelForm):
 	class Meta:
-		model = Reviews
+		model = Review
 		fields = [
 			'user_name',
 			'review',
@@ -22,7 +22,7 @@ class AddReviews(forms.ModelForm):
 			'review': forms.Textarea(attrs={
 				'placeholder': 'Отзыв',
 				'class': 'form-control-review',
-				'maxlength': '250',
+				'maxlength': '1000',
 				'width': '10',
 			}),
 			'stars': forms.TextInput(attrs={
@@ -45,29 +45,23 @@ class Feedback(forms.Form):
 		"""
 
 	email = forms.EmailField(required=True, max_length=35)
-	rest_name = forms.CharField(required=True, max_length=30)
+	name = forms.CharField(required=True, max_length=30)
 	description = forms.CharField(required=True, max_length=250)
-	link = forms.URLField(label='Ваш сайт:', required=False, max_length=150)
+	link = forms.CharField(label='Ваш сайт:', required=False, max_length=150)
 
 	# TODO дописать фронт для такущей формы
 	widgets = {
 		'email': forms.EmailInput(attrs={
-			'placeholder': 'Email',
-			'min': '9',
-			'max': '35',
+			'max': '50',
 		}),
-		'rest_name': forms.EmailInput(attrs={
-			'placeholder': 'Название ресторана',
-			'min': '1',
+		'name': forms.TextInput(attrs={
+			'min': '2',
 			'max': '30',
 		}),
-		'description': forms.EmailInput(attrs={
-			'placeholder': 'О ресторане',
-			'min': '1',
-			'max': '250',
+		'description': forms.TextInput(attrs={
+			'max': '1500',
 		}),
-		'link': forms.EmailInput(attrs={
-			'placeholder': 'Ваш сайт:',
-			'max': '150',
+		'link': forms.TextInput(attrs={
+			'max': '255',
 		}),
 	}

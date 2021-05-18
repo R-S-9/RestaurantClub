@@ -8,45 +8,47 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.core.mail import send_mail
 
-
-from .models import Reviews, Restaurant
+from .models import Review, Restaurant
 from .forms import AddReviews, Feedback
 from django.conf import settings
 
 
-def main_map_restaurants(request, errors=None):
+def main_map_restaurants(request, errors=None, form=None):
 
-    if request.method == 'POST':
-        if 'application_to_add' in request.POST:
-            print('YES')
-            return restaurant_offer(request)
+    if not form and 'application_to_add' in request.POST:
+        return restaurant_offer(request)
 
     return loading_data_for_main_site(request, errors)
 
 
 def restaurant_offer(request):
-    # TODO фун-ия для отправки по емаилу запроса на добавление ресторана
+    form = Feedback(request.POST)
 
-    # form = Feedback(request.POST)
-    # # form = Feedback()
-    #
-    # if form.is_valid():
-    #     subject = form.cleaned_data['subject']
-    #     from_email = form.cleaned_data['from_email']
-    #     message = form.cleaned_data['message']
+    if form.is_valid():
+        name = form.cleaned_data['name']
+        email = form.cleaned_data['email']
+        description = form.cleaned_data['description']
+        link = form.cleaned_data['link']
 
-    # Отправка работает:
-    # send_mail(
-    #     'Тестируем',
-    #     'Текст',
-    #     settings.EMAIL_HOST_USER,
-    #     [
-    #         'rafik.saakyan.1989@mail.ru'
-    #     ]
-    # )
-    pass
+        message = f'Доброго времени суток RestaurantClub. Я {name}, хочу ' \
+                  f'добавить свой ресторан в ваше приложение.\nМой e-mail ' \
+                  f'для контакта - {email}.\nИнформация о моем ресторане:\n' \
+                  f'{description}\nСсылки: {link}'
 
-# restaurant_offer()
+        send_mail(
+            f'Сотрудничество с сайтом RestaurantClub от {name}',
+            message,
+            settings.EMAIL_HOST_USER,
+            [
+                'rafik.saakyan.1989@mail.ru'
+            ]
+        )
+
+    return HttpResponseRedirect('accepted_coop')
+
+
+def accepted_coop(request):
+    return render(request, 'accepted_coop.html', {})
 
 
 def loading_data_for_main_site(request, errors):
@@ -82,7 +84,7 @@ def loading_data_for_main_site(request, errors):
 def search_results_view(request):
     if request.method == 'GET':
         menu = Restaurant.objects.all()
-        reviews = Reviews.objects.all()
+        reviews = Review.objects.all()
 
         return render(
             request,
@@ -124,6 +126,7 @@ def search_results_view(request):
                 'location': r.location,
                 'rating': rating,
                 'image': r.images.values('image_restaurant'),
+                'reviews': r.reviews.values('review', 'stars'),
             })
 
         data.sort(key=itemgetter('rating'), reverse=True)
@@ -168,6 +171,7 @@ def restaurants_map(request, rest_name):
                 'rating': rating,
                 'image': r.images.values('image_restaurant'),
             })
+
         return information
 
     data = _data_for_rest(rest_name)
@@ -331,6 +335,7 @@ def restaurants_card_api(request):
             'restaurant_name': r.restaurant_name,
             'restaurant_id': r.restaurant_id,
             'description_restaurant': r.description_restaurant,
+            'about_restaurant': r.about_restaurant,
             'average_check_restaurant': r.average_check_restaurant,
             'location': r.location,
             'menu': '\n'.join(r.dish_set.values_list('name', flat=True)),
@@ -382,7 +387,7 @@ def create_review(request):
         return HttpResponse(status=400)
 
     try:
-        Reviews.objects.create(
+        Review.objects.create(
             review=review,
             id_restaurant_id=rest_id,
             user_name=user_name,

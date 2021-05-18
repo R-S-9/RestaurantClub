@@ -103,14 +103,30 @@ P{
 	margin-top: -60px;
 	margin-left: auto;
 	width: 1700px;
+	position: relative;
 	
 }
 .download{
-	margin-right: 1290px;
+	margin-right: 65vw;
+	display: flex;
+}
+.form_button{
+    border-radius: 20px;
+    box-shadow: 5px 5px 10px rgb(0 0 0 / 50%);
+    border: none;
+    color: white;
+    outline: none;
+    background: #198C77;
+    width: 150px;
+    height: 60px;
+	font-size: 16px;
+	position: absolute;
+	left: -10vw;
+	top: -10px;
+	cursor: pointer;
 }
 .copyright{
 	margin-top: 30px;
-	
 }
 
 .error{
@@ -127,7 +143,7 @@ footer{
 .slider_cont{
 	margin: 0 auto;
 	width: 850px;
-	margin-top: 180px;
+	margin-top: 19vh;
 }
 .slick-slider{}
 /* Слайдер запущен */
@@ -273,7 +289,102 @@ footer{
 	margin-bottom: 10px;
 	font-weight: normal;
 }
+.overlay{
+	position: absolute;
+	width: 100%;
+	height: 100vh;
+	top: 0;
+	left: 0;
+	display: none;
+}
 
+.popup{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	padding: 40px;
+	color: white;
+	background: linear-gradient(257.16deg, #198C77 2.18%, #000000 96.77%);
+	display: flex;
+	flex-direction: column;
+	border-radius: 20px;
+}
+.popup h1{
+	margin-bottom: 30px;
+}
+.form_container{
+	display: flex;
+	
+}
+.form123{
+	display: flex;
+	flex-direction: column;
+	margin-right: 50px;
+}
+.form123 .data{
+	padding-left: 0;
+	margin-bottom: 20px;
+	background-color: transparent;
+	color: white;
+	border-bottom: 1px solid white;
+}
+.submit{
+	margin-top: 40px;
+	background: linear-gradient(88.32deg, #198C77 -18.09%, #0D1715 96.87%);
+	box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+	border-radius: 20px;
+	border: none;
+	color: white;
+	height: 50px;
+	font-size: 22px;
+	cursor: pointer;
+}
+.form_container label{
+	margin-bottom: 10px;
+}
+.form4{
+	display: flex;
+	flex-direction: column;
+}
+.form4 textarea{
+	outline: none;
+	border: none;
+	background-color: transparent;
+	color: white;
+	border-bottom: 1px solid white;
+	width: 450px;
+	resize: none;
+	font-size: 17px;
+}
+.close-popup{
+	position: absolute;
+	top: 30px;
+	right: 30px;
+	width: 25px;
+	height: 25px;
+	cursor: pointer;
+}
+.close-popup::before{
+	content: '';
+	background-color: #fff;
+	position: absolute;
+	height: 1px;
+	width: 35px;
+	top: 11px;
+	left: -4px;
+	transform: rotate(-45deg);
+}
+.close-popup::after{
+	content: '';
+	background-color: #fff;
+	position: absolute;
+	height: 1px;
+	width: 35px;
+	top: 11px;
+	left: -4px;
+	transform: rotate(45deg);
+}
 
 
 

@@ -11,7 +11,6 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
-	<script src="/main.js"></script>
 </head>
 
     {% block content %}
@@ -129,6 +128,7 @@
 									</div>
 								{% endfor %}
 						</div>
+						</div>
 					</form>
 					<!-- подключаем jq -->
 					<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -141,15 +141,49 @@
 				</section>
 				<footer class="footer">
 					<div class="containerf">
+						
+						<div class="cooperation">
+							<button class="form_button js-form-button"><b>Сотрудничество</b></button>
+						</div>
 						<div class="download">
 							<a href=""><img src="/media/appstore.png" alt=""></a>
 							<a href=""><img src="/media/playmarket.png" alt=""></a>
 						</div>
+						
 						<div class="copyright">
 							&copy 2021 RestaurantClub
 						</div>
 					</div>
 				</footer>
+				
+			</div>
+			<div class="overlay js-overlay">
+				<div class="popup js-popup">
+					<h1>Оставьте свои контактные данные и мы свяжемся с вами для сотрудничества</h1>
+					<div class="popup_form">
+						<form action="{% url 'main_map_restaurants' %}" method="POST">
+							<div class="form_container">
+								<div class="form123">
+									<label for="name">Введите ваше имя</label>
+									<input type="text" name="name" id="name" class="data" minlength="2" maxlength="30" required>
+
+									<label for="email">Введите ваш e-mail</label>
+									<input type="email" name="email" id="e-mail" class="data" required maxlength="50">
+
+									<label for="link">Ссылки на сайт/соц.сети</label>
+									<input type="text" name="link" id="links" maxlength="255" class="data">
+
+									<input type="submit" name="application_to_add" id="submit" class="submit">
+								</div>
+								<div class="form4">
+									<label for="description">Прочая информация</label>
+									<textarea name="description" id="myTextarea" rows="1" maxlength="1500" required></textarea>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="close-popup js-close"></div>
+				</div>
 			</div>
         </body>
     {% endblock %}

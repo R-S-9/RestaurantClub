@@ -2,3 +2,4 @@ Django>=3.2.3
 Pillow>=8.2.0
 django-widget-tweaks>=1.4.8
 jsons>=1.4.2
+psycopg2>=2.8.6

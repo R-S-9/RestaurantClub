@@ -74,10 +74,10 @@ class Dish(models.Model):
         verbose_name_plural = 'Блюда'
 
 
-class Reviews(models.Model):  # Review
+class Review(models.Model):  # Review
     """Отзывы."""
     review = models.CharField(
-        max_length=255,
+        max_length=1000,
         verbose_name='Отзыв',
         blank=False,
         help_text='Оставьте отзыв о ресторане'
@@ -130,7 +130,7 @@ class Reviews(models.Model):  # Review
 
     def save(self, *args, **kwargs):
         self._set_order()
-        super(Reviews, self).save(*args, **kwargs)
+        super(Review, self).save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.id_restaurant} {self.review}'
