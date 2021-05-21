@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.core.mail import send_mail
 
-from .models import Review, Restaurant
+from .models import Review, Restaurant, adding_endings_for_improved_search
 from .forms import AddReviews, Feedback
 from django.conf import settings
 
@@ -94,6 +94,8 @@ def search_results_view(request):
 
     if request.method == 'POST':
         search_word = request.POST.get('search').strip()
+
+        search_word = adding_endings_for_improved_search(search_word)
 
         restaurants = Restaurant.objects.filter(
             dish__name__icontains=search_word

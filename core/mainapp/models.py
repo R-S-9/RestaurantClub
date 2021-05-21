@@ -49,6 +49,7 @@ class Restaurant(models.Model):
 
 
 class Dish(models.Model):
+    """Блюда для ресторана"""
     name = models.CharField(
         verbose_name='Название',
         max_length=100,
@@ -74,7 +75,7 @@ class Dish(models.Model):
         verbose_name_plural = 'Блюда'
 
 
-class Review(models.Model):  # Review
+class Review(models.Model):
     """Отзывы."""
     review = models.CharField(
         max_length=1000,
@@ -171,3 +172,42 @@ class Image(models.Model):
     class Meta:
         verbose_name = 'Картинка'
         verbose_name_plural = 'Картинки'
+
+
+def adding_endings_for_improved_search(word):
+    """
+        Проверка на количество слов и окончания в них
+    """
+    if not word:
+        return None
+
+    word = word.split()
+
+    if len(word) > 1:
+        return split_a_sentence_for_improved_search(word)
+
+    endings = ('и', 'ы')
+
+    if endings in word[len(word)-1:]:
+        word = word[:len(word)-1]
+
+    return ''.join(word)
+
+
+def split_a_sentence_for_improved_search(sentence):
+    """
+        Если слов несколько, происходит поиск слов с длинной от 2-х, и поиском
+        по ним
+    """
+    main_word = []
+
+    [main_word.append(content) for content in sentence if len(content) > 2]
+
+    for dish in main_word:
+
+        sentence = Restaurant.objects.filter(
+            dish__name__icontains=dish
+        ).distinct()
+
+        if sentence.exists():
+            return dish
